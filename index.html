@@ -154,12 +154,14 @@
     <div class="w-full max-w-md relative z-10">
      <div class="text-center mb-8 animate-fade-in">
       <div class="mb-6">
-       <div class="inline-block animate-float"><img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" alt="Logo Badur Khan" loading="lazy" class="w-32 h-32 mx-auto object-contain" onerror="this.src=''; this.alt='Logo gagal dimuat'; this.style.display='none';">
+       <div class="inline-block animate-float"><img src="" alt="Logo Badur Khan" loading="lazy" class="w-32 h-32 mx-auto rounded-full shadow-2xl object-contain animate-float hidden" style="background: transparent;" onerror="this.style.display='none'; document.getElementById('default-logo').classList.remove('hidden');">
+       <div id="default-logo" class="inline-block p-4 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-2xl shadow-xl animate-float">
+        <svg class="w-16 h-16 text-white" viewbox="0 0 100 100" fill="none"><circle cx="50" cy="30" r="15" fill="currentColor" opacity="0.9" /> <path d="M50 50 L30 90 L50 75 L70 90 Z" fill="currentColor" /> <path d="M25 55 L15 70 M75 55 L85 70" stroke="currentColor" stroke-width="4" stroke-linecap="round" /> <path d="M35 60 L20 50 M65 60 L80 50" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </svg>
        </div>
       </div>
       <h1 id="app-title" class="text-3xl font-bold text-emerald-800 mb-2">Badur Khan</h1>
       <p id="app-subtitle" class="text-emerald-600 font-medium">Sistem Monitoring Beladiri Santri</p>
-      <p class="font-arabic text-xl text-amber-600 mt-2">بَارَكَ اللهُ فِيكُم</p>
      </div>
      <div class="gradient-border animate-fade-in">
       <div class="inner-card p-8">
@@ -168,7 +170,7 @@
         <p class="text-gray-500 text-sm mt-1">Masukkan NIATH untuk memantau perkembangan santri</p>
        </div>
        <form id="login-form" class="space-y-6">
-        <div><label for="niath-input" class="block text-sm font-medium text-gray-700 mb-2"> NIATH (Nomor Induk Anak Thariqah) </label>
+        <div><label for="niath-input" class="block text-sm font-medium text-gray-700 mb-2"> NIATH (Nomor Induk Anggota Thifan) </label>
          <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -308,11 +310,14 @@
          <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
          </svg> Sejarah Badur Khan</h3>
         <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed space-y-4">
-         <p><strong class="text-emerald-700">Badur Khan</strong> adalah sebuah program pelatihan beladiri yang didirikan dengan tujuan membentuk karakter santri melalui latihan fisik, mental, dan spiritual. Program ini dimulai pada tahun 2020 sebagai inisiatif pondok pesantren untuk memberikan pembelajaran seni bela diri tradisional kepada para santri.</p>
-         <p>Nama <strong class="text-emerald-700">"Badur Khan"</strong> diambil dari bahasa yang berarti "Prajurit Perkasa yang Berilmu". Program ini menggabungkan nilai-nilai keislaman dengan teknik beladiri yang telah diajarkan turun-temurun, menciptakan metode pembelajaran yang unik dan berkarakter.</p>
-         <p>Sejak didirikan, Badur Khan telah melatih ratusan santri dengan berbagai tingkatan, dari sabuk putih hingga sabuk hitam. Program ini tidak hanya fokus pada aspek fisik, tetapi juga menanamkan nilai-nilai seperti disiplin, rasa hormat, tanggung jawab, dan semangat pantang menyerah.</p>
-         <p>Hingga saat ini, Badur Khan terus berkembang dan menjadi salah satu program unggulan pondok pesantren, dengan berbagai prestasi di tingkat lokal maupun regional. Para alumni Badur Khan dikenal memiliki karakter yang kuat, disiplin tinggi, dan kemampuan beladiri yang mumpuni.</p>
-        </div>
+        <p>
+                Sejarah Thifan Po Khan berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui <strong>Master Je’nan</strong> yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh tokoh misterius <strong>Ahmad Syiharani</strong> menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam. Ilmu ini berkembang secara eksklusif dalam tradisi pesantren bangsawan dan militer di lingkungan Khilafah, mulai dari Bani Seljuk, Dinasti Ayyubiyah di bawah Shalahuddin Al Ayyubi, hingga menjadi bagian dari strategi tempur perwira Khilafah Utsmaniyah.
+              </p>
+              <p>
+                Thifan Po Khan masuk ke Nusantara pada abad ke-16 melalui ekspansi militer Khilafah Utsmaniyah yang dikirim Sultan Selim II untuk membantu Kesultanan Aceh melawan Portugis, di mana para instruktur militernya sekaligus memperkenalkan bela diri ini. Estafet keilmuan ini kemudian menyebar ke tanah Sumatera pada abad ke-18 melalui peran <strong>Tuanku Rao</strong> di Bonjol, hingga akhirnya mencapai Pulau Jawa melalui <strong>Haji Hang Uding</strong> yang menggunakan ilmu ini untuk memproteksi pedagang pribumi dalam jaringan Serikat Dagang Islam (SDI). Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> yang melahirkan ribuan murid di seluruh Indonesia, dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah.
+              </p>
+            </div>
+          </section>
        </div>
       </div><!-- Biodata Content -->
       <div id="biodata-content" class="hidden">
