@@ -147,67 +147,25 @@
             <div class="py-2 flex justify-between"><span class="text-slate-400 text-sm">Tingkat</span><span id="bio-tingkat" class="font-bold text-emerald-600 uppercase">-</span></div>
             <div class="py-2 flex flex-col"><span class="text-slate-400 text-sm mb-1">Alamat</span><span id="bio-alamat" class="font-medium text-slate-700">-</span></div>
           </div>
-        </div>
+     </div> 
+
 <div id="content-struktur" class="content-section hidden space-y-4">
   <h2 class="text-xl font-bold text-emerald-900 text-center">Struktur Pengurus Badur Khan</h2>
-  
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-emerald-500">
-      <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-xl">👨‍🏫</div>
+    </div> </div> <div id="content-iuran" class="content-section hidden space-y-4">
+  <h2 class="text-xl font-bold text-emerald-900">Status Iuran Bulanan</h2>
+  <div class="bg-white p-6 rounded-3xl shadow-sm border-l-8 border-emerald-500">
+    <div class="flex justify-between items-center">
       <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Pembina</p>
-        <p class="font-bold text-emerald-900">Ust. Ali Yahya, B.A.</p>
+        <p class="text-xs text-slate-400 font-bold uppercase mb-1">Status Pembayaran</p>
+        <p id="display-iuran" class="text-2xl font-black text-emerald-700">Memuat...</p>
       </div>
+      <div class="text-4xl">💰</div>
     </div>
-
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-amber-500">
-      <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-xl">👨‍💼</div>
-      <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Ketua</p>
-        <p class="font-bold text-emerald-900">M. Nikhat Al-Badruni</p>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-amber-400">
-      <div class="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-xl">👤</div>
-      <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Wakil Ketua</p>
-        <p class="font-bold text-emerald-900">Ahmad Jariir</p>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-blue-500">
-      <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl">📝</div>
-      <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Sekretaris</p>
-        <p class="font-bold text-emerald-900">Shalahuddin Maulana A</p>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-blue-400">
-      <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-xl">📑</div>
-      <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Sekretaris 2</p>
-        <p class="font-bold text-emerald-900">Fahri Rachmad F</p>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-yellow-500">
-      <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-xl">💰</div>
-      <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Bendahara</p>
-        <p class="font-bold text-emerald-900">Akio Ramadhana R</p>
-      </div>
-    </div>
-
-    <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-yellow-400">
-      <div class="w-12 h-12 bg-yellow-50 rounded-full flex items-center justify-center text-xl">💵</div>
-      <div>
-        <p class="text-[10px] text-slate-400 font-bold uppercase">Bendahara 2</p>
-        <p class="font-bold text-emerald-900">Agha Shiddiq A</p>
-      </div>
-    </div>
+    <hr class="my-4">
+    <p class="text-[10px] text-slate-400 italic">*Data diperbarui secara berkala oleh Bendahara.</p>
+  </div>
+</div>
 
     <div class="bg-white p-4 rounded-2xl shadow-sm border flex items-center gap-4 border-l-4 border-indigo-500">
       <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-xl">📢</div>
@@ -306,7 +264,7 @@
 
   <script>
     // === MASUKKAN URL EXEC ANDA DI SINI ===
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzv26t2Ri2_nj2TYR35W84SpdwsXoRxMMXZuNDelscdU5qs4B3HMkmimo-lZ36flK6u/exec'
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMquVCTcD2aiyF9_BdzsYAtwGCPhQ7PRRnqKrJMSCYTX4h-Aym-4xzStxAbRY96N9CCQ/exec';
 
     // FUNGSI UPDATE JAM, TANGGAL, DAN INFO AKADEMIK OTOMATIS
     function updateClock() {
