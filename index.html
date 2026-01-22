@@ -45,7 +45,7 @@
           <h2 class="text-xl font-semibold text-gray-800 mb-6 uppercase tracking-wider">Portal Wali Santri</h2>
           <form id="login-form" class="space-y-4">
             <input type="text" id="niath-input" placeholder="MASUKKAN NIATH" class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 outline-none uppercase font-bold text-center">
-            <button type="submit" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition-all">MASUK SISTEM</button>
+            <button type="submit" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition-all text-sm">MASUK SISTEM</button>
           </form>
           <p id="error-msg" class="text-red-500 text-xs font-bold mt-4 hidden">NIATH tidak ditemukan!</p>
         </div>
@@ -58,7 +58,7 @@
         <div class="p-6">
           <h2 class="text-xl font-bold text-emerald-800 mb-6 border-b pb-2 italic">Navigasi</h2>
           <nav class="space-y-2">
-            <button onclick="navTo('dashboard')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">🏠 Dashboard</button>
+            <button onclick="navTo('dashboard')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">🏠 Dashboard Utama</button>
             <button onclick="navTo('biodata')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">👤 Biodata Santri</button>
             <button onclick="navTo('struktur')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">👨‍👩‍👧‍👦 Struktur Pengurus</button>
             <button onclick="navTo('program')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">📝 Target & Program</button>
@@ -94,7 +94,6 @@
       </header>
 
       <main class="p-4 max-w-6xl mx-auto">
-        
         <div id="content-dashboard" class="content-section space-y-6">
           <div class="bg-emerald-800 p-8 rounded-3xl text-white shadow-xl flex justify-between items-center">
             <div>
@@ -104,7 +103,6 @@
             </div>
             <img src="https://i.ibb.co.com/ZRGH2R6Y/9am9pm-3.png" class="w-20 opacity-20 hidden md:block">
           </div>
-
           <div class="grid grid-cols-3 gap-4">
             <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-green-500 text-center">
               <p class="text-xs font-bold text-slate-400 uppercase mb-1">Hadir</p>
@@ -119,7 +117,6 @@
               <p id="stat-alpa" class="text-3xl font-black text-red-600">0</p>
             </div>
           </div>
-
           <div class="bg-white p-8 rounded-3xl shadow-sm border leading-relaxed">
             <h3 class="text-xl font-bold text-emerald-900 mb-6 flex items-center gap-2">📜 Sejarah Thifan Po Khan</h3>
             <div class="text-slate-600 text-sm space-y-4 text-justify">
@@ -129,34 +126,21 @@
           </div>
         </div>
 
-        <div id="content-biodata" class="content-section hidden">
-          <div class="bg-white p-8 rounded-3xl shadow-sm border space-y-4">
-            <h3 class="text-xl font-bold text-emerald-900 mb-6 uppercase tracking-wider">👤 Biodata Lengkap Santri</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm divide-y">
-              <div class="py-2 flex justify-between"><span>Nama</span><span id="bio-nama" class="font-bold">-</span></div>
-              <div class="py-2 flex justify-between"><span>Umur</span><span id="bio-umur" class="font-bold">-</span></div>
-              <div class="py-2 flex justify-between"><span>Kelas</span><span id="bio-kelas" class="font-bold">-</span></div>
-              <div class="py-2 flex justify-between"><span>Tingkat</span><span id="bio-tingkat" class="font-bold text-emerald-600">-</span></div>
-              <div class="py-2 flex flex-col pt-4"><span>Alamat</span><span id="bio-alamat" class="font-medium mt-1">-</span></div>
-            </div>
-          </div>
-        </div>
-
         <div id="content-program" class="content-section hidden space-y-6">
           <div class="bg-white p-8 rounded-3xl shadow-sm border">
             <h3 class="text-2xl font-bold text-emerald-900 mb-8 border-b-2 border-emerald-50 pb-2 italic">🎯 Target & Program Latihan</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-sm">
               <div class="bg-emerald-50 p-6 rounded-2xl">
-                <h4 class="font-bold text-emerald-800 mb-3 uppercase tracking-tighter">📅 Program Tahunan</h4>
+                <h4 class="font-bold text-emerald-800 mb-3 uppercase">📅 Program Tahunan</h4>
                 <ul class="space-y-2">
-                  <li>• <strong>Ujian Kenaikan Tingkat:</strong> Dilaksanakan setiap tahun untuk mengevaluasi kemampuan dan menentukan kenaikan sabuk.</li>
-                  <li>• <strong>Pertandingan Tahunan:</strong> Kompetisi internal dan eksternal untuk mengasah mental dan sportivitas.</li>
+                  <li>• <strong>Ujian Kenaikan Tingkat:</strong> Dilaksanakan setiap tahun untuk mengevaluasi kemampuan.</li>
+                  <li>• <strong>Pertandingan Tahunan:</strong> Kompetisi internal dan eksternal untuk mengasah sportivitas.</li>
                 </ul>
               </div>
               <div class="bg-amber-50 p-6 rounded-2xl">
-                <h4 class="font-bold text-amber-800 mb-3 uppercase tracking-tighter">🌓 Program Semesteran</h4>
+                <h4 class="font-bold text-amber-800 mb-3 uppercase">🌓 Program Semesteran</h4>
                 <ul class="space-y-2">
-                  <li>• <strong>Uji Kompetensi:</strong> Evaluasi berkala setiap semester untuk mengukur perkembangan teknik.</li>
+                  <li>• <strong>Uji Kompetensi:</strong> Evaluasi berkala untuk mengukur perkembangan teknik.</li>
                   <li>• <strong>Fun Match:</strong> Pertandingan persahabatan antar kelas untuk kebersamaan.</li>
                 </ul>
               </div>
@@ -166,7 +150,7 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs md:text-sm text-slate-600 font-medium">
                 <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Teknik dasar hingga lanjutan</div>
                 <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Karakter disiplin & tanggung jawab</div>
-                <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Kesehatan fisik & mental santri</div>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Kesehatan fisik & mental</div>
                 <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Integrasi nilai-nilai Islam</div>
               </div>
             </div>
@@ -176,10 +160,15 @@
         <div id="content-dokumentasi" class="content-section hidden">
           <div class="bg-white p-8 rounded-3xl shadow-sm border">
             <h3 class="text-2xl font-bold text-emerald-900 mb-6 uppercase tracking-wider">📸 Galeri Dokumentasi</h3>
-            <div class="flex gap-2 mb-6 text-[10px] font-bold uppercase">
-              <button class="px-4 py-2 bg-emerald-600 text-white rounded-lg">Semua</button>
-              <button class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg">Foto</button>
-              <button class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg">Video</button>
+            <div class="flex gap-2 mb-6 text-[10px] font-bold uppercase overflow-x-auto pb-2">
+              <button class="px-4 py-2 bg-emerald-600 text-white rounded-lg whitespace-nowrap">Semua</button>
+              <button class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg whitespace-nowrap">Foto</button>
+              <button class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg whitespace-nowrap">Video</button>
+            </div>
+            <div id="dynamic-docs" class="mb-8">
+              <div class="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed">
+                <p class="text-slate-400 text-xs italic font-bold">Belum ada dokumentasi terbaru diunggah untuk santri ini.</p>
+              </div>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">🥋</div><p class="text-[9px] font-bold text-slate-500 uppercase">Latihan Rutin</p></div>
@@ -187,13 +176,13 @@
               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">📜</div><p class="text-[9px] font-bold text-slate-500 uppercase">Ujian Tingkat</p></div>
               <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">🏆</div><p class="text-[9px] font-bold text-slate-500 uppercase">Pertandingan</p></div>
             </div>
-            <p class="mt-6 text-[10px] text-slate-400 italic font-medium">*Info: Klik pada gambar/video untuk melihat detail dan mengunduh.</p>
+            <p class="mt-6 text-[10px] text-slate-400 italic font-medium">*Info: Klik pada gambar/video untuk melihat detail dan mengunduh. Dokumentasi diupdate secara berkala.</p>
           </div>
         </div>
 
         <div id="content-struktur" class="content-section hidden">
           <div class="bg-white p-8 rounded-3xl shadow-sm border overflow-x-auto">
-            <h3 class="text-xl font-bold text-emerald-900 mb-8 text-center uppercase tracking-widest">👨‍👩‍👧‍👦 Struktur Pengurus Badur Khan</h3>
+            <h3 class="text-xl font-bold text-emerald-900 mb-8 text-center uppercase tracking-widest font-black">👨‍👩‍👧‍👦 Struktur Pengurus Badur Khan</h3>
             <div class="org-chart text-[9px] md:text-sm">
               <div class="org-level"><div class="org-box"><div class="text-[8px] opacity-70 uppercase">Pembina</div><div class="font-bold">Ust. Ali Yahya, B.A.</div></div></div>
               <div class="org-level">
@@ -221,25 +210,38 @@
           </div>
         </div>
 
+        <div id="content-biodata" class="content-section hidden">
+          <div class="bg-white p-8 rounded-3xl shadow-sm border">
+            <h3 class="text-xl font-bold text-emerald-900 mb-6 uppercase tracking-wider">👤 Biodata Santri</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm divide-y">
+              <div class="py-2 flex justify-between"><span>Nama</span><span id="bio-nama" class="font-bold">-</span></div>
+              <div class="py-2 flex justify-between"><span>Umur</span><span id="bio-umur" class="font-bold">-</span></div>
+              <div class="py-2 flex justify-between"><span>Kelas</span><span id="bio-kelas" class="font-bold">-</span></div>
+              <div class="py-2 flex justify-between"><span>Tingkat</span><span id="bio-tingkat" class="font-bold text-emerald-600">-</span></div>
+              <div class="py-2 flex flex-col pt-4"><span>Alamat</span><span id="bio-alamat" class="font-medium mt-1">-</span></div>
+            </div>
+          </div>
+        </div>
+
         <div id="content-iuran" class="content-section hidden">
           <div class="bg-white p-8 rounded-3xl shadow-sm border text-center">
-            <h3 class="text-xl font-bold text-emerald-900 mb-6 uppercase tracking-wider">💰 Iuran Bulanan</h3>
+            <h3 class="text-xl font-bold text-emerald-900 mb-6 uppercase tracking-wider font-black">💰 Iuran Bulanan</h3>
             <div class="p-8 bg-emerald-50 rounded-2xl border-2 border-emerald-100">
-              <p class="text-xs text-emerald-600 font-bold uppercase mb-2 italic">Status Terakhir Santri</p>
+              <p class="text-xs text-emerald-600 font-bold uppercase mb-2">Status Pembayaran</p>
               <p id="display-iuran" class="text-3xl font-black text-emerald-800 italic uppercase">Memuat...</p>
             </div>
           </div>
         </div>
 
         <div id="content-sertifikat" class="content-section hidden space-y-6">
-          <div id="cert-area" class="certificate-container p-12 text-center max-w-2xl mx-auto aspect-[4/3] flex flex-col justify-between">
+          <div id="cert-area" class="certificate-container p-12 text-center max-w-2xl mx-auto aspect-[4/3] flex flex-col justify-between shadow-2xl border-[12px] double border-amber-400">
             <div class="certificate-border"></div>
             <div class="relative z-10 text-center">
               <img src="https://i.ibb.co.com/ZRGH2R6Y/9am9pm-3.png" class="w-16 mx-auto mb-4 opacity-30">
               <h2 class="font-certificate text-3xl text-amber-900 font-bold mb-6 italic tracking-widest">SERTIFIKAT KELULUSAN</h2>
-              <p class="text-slate-500 text-sm italic">Diberikan kepada:</p>
+              <p class="text-slate-500 text-xs italic">Diberikan kepada:</p>
               <h3 id="cert-nama" class="font-certificate text-2xl font-bold text-emerald-900 my-4 border-b-2 border-amber-400 inline-block px-6">-</h3>
-              <p class="text-slate-600 text-sm mt-4">Telah dinyatakan Lulus pada tingkat:</p>
+              <p class="text-slate-600 text-xs mt-4">Telah dinyatakan Lulus pada tingkat:</p>
               <p id="cert-tingkat" class="text-emerald-700 font-bold text-2xl my-2 uppercase tracking-widest">-</p>
             </div>
             <div class="relative z-10 flex justify-center mt-8 text-[10px] font-bold text-slate-400">
@@ -249,9 +251,8 @@
               </div>
             </div>
           </div>
-          <button onclick="downloadPDF()" class="w-full py-4 bg-amber-600 text-white font-bold rounded-2xl shadow-lg hover:bg-amber-700 transition">📥 UNDUH SERTIFIKAT (PDF)</button>
+          <button onclick="downloadPDF()" class="w-full py-4 bg-amber-600 text-white font-bold rounded-xl shadow-lg hover:bg-amber-700 transition uppercase tracking-widest">📥 DOWNLOAD SERTIFIKAT (PDF)</button>
         </div>
-
       </main>
     </div>
   </div>
@@ -332,6 +333,16 @@
       document.getElementById('bio-alamat').innerText = d.alamat;
       document.getElementById('cert-nama').innerText = d.nama;
       document.getElementById('cert-tingkat').innerText = d.tingkat;
+
+      const dynamicDocs = document.getElementById('dynamic-docs');
+      if (d.foto_lat || d.video_lat) {
+        dynamicDocs.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${d.foto_lat ? `<div class="space-y-2"><p class="text-[9px] font-bold text-slate-400 uppercase">Foto Terbaru</p><img src="${d.foto_lat}" class="rounded-xl w-full shadow-lg border-2 border-white"></div>` : ''}
+            ${d.video_lat ? `<div class="space-y-2"><p class="text-[9px] font-bold text-slate-400 uppercase">Video Latihan</p><video controls class="rounded-xl w-full shadow-lg border-2 border-white"><source src="${d.video_lat}"></video></div>` : ''}
+          </div>
+        `;
+      }
     }
 
     async function downloadPDF() {
