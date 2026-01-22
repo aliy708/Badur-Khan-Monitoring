@@ -1,57 +1,375 @@
-function populateDashboard(d) {
-  // 1. Isi Data Dasar
-  document.getElementById('display-nama').innerText = d.nama;
-  document.getElementById('display-niath').innerText = `NIATH: ${d.niath}`;
-  document.getElementById('stat-hadir').innerText = d.kehadiran || 0;
-  document.getElementById('stat-sakit').innerText = d.sakit || 0;
-  document.getElementById('stat-alpa').innerText = d.alpa || 0;
-  
-  // Proteksi Iuran (Agar tidak error jika kosong)
-  let statusIuran = d.iuran ? d.iuran.toString().replace(/\"/g, "") : "Lunas";
-  document.getElementById('display-iuran').innerText = statusIuran;
-  
-  // 2. Isi Biodata
-  document.getElementById('bio-nama').innerText = d.nama;
-  document.getElementById('bio-umur').innerText = `${d.umur} Tahun`;
-  document.getElementById('bio-kelas').innerText = d.kelas; 
-  document.getElementById('bio-tingkat').innerText = d.tingkat;
-  document.getElementById('bio-alamat').innerText = d.alamat;
-  
-  // 3. Isi Sertifikat
-  document.getElementById('cert-nama').innerText = d.nama;
-  document.getElementById('cert-tingkat').innerText = d.tingkat;
+<!doctype html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badur Khan - Monitoring Beladiri Santri</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { box-sizing: border-box; }
+    * { font-family: 'Poppins', sans-serif; }
+    .font-arabic { font-family: 'Amiri', serif; }
+    .font-certificate { font-family: 'Playfair Display', serif; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: white; box-shadow: 2px 0 20px rgba(0,0,0,0.1); transition: left 0.3s ease-out; z-index: 100; overflow-y: auto; }
+    .sidebar.active { left: 0; }
+    .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99; display: none; }
+    .sidebar-overlay.active { display: block; }
+    .org-chart { display: flex; flex-direction: column; align-items: center; }
+    .org-level { display: flex; justify-content: center; gap: 0.75rem; margin: 0.75rem 0; flex-wrap: wrap; }
+    .org-box { background: linear-gradient(135deg, #10b981, #059669); padding: 0.75rem; border-radius: 0.75rem; color: white; text-align: center; min-width: 130px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .certificate-container { background: #fffcf0; border: 12px double #d4af37; padding: 3rem 2rem; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .certificate-border { position: absolute; top: 1rem; left: 1rem; right: 1rem; bottom: 1rem; border: 2px solid #d4af37; border-radius: 0.5rem; }
+  </style>
+</head>
+<body class="h-full bg-gradient-to-br from-emerald-50 via-white to-emerald-100 overflow-auto">
+  <div id="app-container" class="w-full min-h-full">
 
-  // 4. BAGIAN FOTO & VIDEO (Dokumentasi Dinamis)
-  const dynamicDocs = document.getElementById('dynamic-docs');
-  if (dynamicDocs) {
-    if (d.foto_lat || d.video_lat) {
-      dynamicDocs.innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
-          ${d.foto_lat ? `
-            <div class="space-y-2">
-              <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest text-center">Foto Kegiatan Terbaru</p>
-              <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-                <img src="${d.foto_lat}" class="w-full h-auto object-cover aspect-video" onerror="this.src='https://placehold.co/600x400?text=Foto+Gagal+Dimuat'">
-              </div>
-            </div>` : ''}
-            
-          ${d.video_lat ? `
-            <div class="space-y-2">
-              <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest text-center">Video Latihan</p>
-              <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-black">
-                <video controls class="w-full aspect-video">
-                  <source src="${d.video_lat}" type="video/mp4">
-                  Browser tidak mendukung video.
-                </video>
-              </div>
-            </div>` : ''}
+    <div id="login-page" class="min-h-screen flex flex-col items-center justify-center p-4">
+      <div class="w-full max-w-md mb-6 bg-white/80 backdrop-blur rounded-2xl p-4 shadow-lg text-center animate-fade-in relative z-10">
+        <div class="text-emerald-700 font-semibold text-lg" id="current-day-login">-</div>
+        <div class="text-gray-600 font-medium" id="current-date-login">-</div>
+        <div class="text-3xl font-bold text-emerald-800 mt-2" id="current-time-login">00:00:00</div>
+      </div>
+      <div class="w-full max-w-md relative z-10 text-center">
+        <div class="inline-block animate-float"><img src="https://i.ibb.co.com/ZRGH2R6Y/9am9pm-3.png" class="w-32 h-32 mx-auto object-contain"></div>
+        <h1 class="text-3xl font-bold text-emerald-800 mb-2">Badur Khan</h1>
+        <p class="text-emerald-600 font-medium mb-6 uppercase tracking-widest">Martial Arts System</p>
+        <div class="bg-white p-8 rounded-3xl shadow-2xl border border-emerald-100">
+          <h2 class="text-xl font-semibold text-gray-800 mb-6 uppercase tracking-wider">Portal Wali Santri</h2>
+          <form id="login-form" class="space-y-4">
+            <input type="text" id="niath-input" placeholder="MASUKKAN NIATH" class="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 outline-none uppercase font-bold text-center">
+            <button type="submit" class="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition-all">MASUK SISTEM</button>
+          </form>
+          <p id="error-msg" class="text-red-500 text-xs font-bold mt-4 hidden">NIATH tidak ditemukan!</p>
         </div>
-      `;
-    } else {
-      dynamicDocs.innerHTML = `
-        <div class="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
-          <p class="text-slate-400 text-xs italic font-medium">Belum ada dokumentasi khusus untuk santri ini.</p>
-        </div>`;
+      </div>
+    </div>
+
+    <div id="dashboard-page" class="hidden min-h-screen">
+      <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+      <div id="sidebar" class="sidebar">
+        <div class="p-6">
+          <h2 class="text-xl font-bold text-emerald-800 mb-6 border-b pb-2 italic">Navigasi</h2>
+          <nav class="space-y-2">
+            <button onclick="navTo('dashboard')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">🏠 Dashboard</button>
+            <button onclick="navTo('biodata')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">👤 Biodata Santri</button>
+            <button onclick="navTo('struktur')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">👨‍👩‍👧‍👦 Struktur Pengurus</button>
+            <button onclick="navTo('program')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">📝 Target & Program</button>
+            <button onclick="navTo('dokumentasi')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">📸 Dokumentasi</button>
+            <button onclick="navTo('iuran')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">💰 Iuran Bulanan</button>
+            <button onclick="navTo('sertifikat')" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition font-medium">📜 Sertifikat</button>
+            <hr class="my-6">
+            <button onclick="location.reload()" class="w-full p-3 bg-red-50 text-red-600 rounded-xl font-bold">LOGOUT</button>
+          </nav>
+        </div>
+      </div>
+
+      <header class="max-w-6xl mx-auto p-4 flex justify-between items-center bg-white/90 backdrop-blur sticky top-0 z-40 border-b shadow-sm">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleSidebar()" class="p-2 px-3 bg-emerald-600 text-white rounded-xl font-bold">☰</button>
+          <div class="flex items-center gap-2 border-l pl-3">
+            <img src="https://i.ibb.co.com/ZRGH2R6Y/9am9pm-3.png" class="w-8 h-8 object-contain" alt="Logo">
+            <div class="leading-none hidden sm:block">
+              <p class="text-[10px] font-bold text-emerald-900 uppercase">Badur Khan</p>
+              <p class="text-[8px] text-slate-500 italic">Monitoring</p>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <p id="header-date" class="text-[10px] font-bold text-slate-500 uppercase tracking-widest"></p>
+          <p id="header-clock" class="text-xl font-black text-emerald-900 tabular-nums leading-none">00:00:00</p>
+        </div>
+        <div class="text-right leading-none min-w-[100px]">
+          <p class="text-[9px] text-slate-400 font-bold uppercase">Tahun Ajaran</p>
+          <p id="academic-year" class="text-xs font-black text-emerald-800"></p>
+          <p id="academic-semester" class="text-[10px] font-bold text-emerald-600 italic"></p>
+        </div>
+      </header>
+
+      <main class="p-4 max-w-6xl mx-auto">
+        <div id="content-dashboard" class="content-section space-y-6">
+          <div class="bg-emerald-800 p-8 rounded-3xl text-white shadow-xl flex justify-between items-center">
+            <div>
+              <h2 class="text-lg opacity-80">Assalamu'alaikum,</h2>
+              <p class="text-4xl font-black text-amber-400" id="display-nama">-</p>
+              <p class="text-emerald-200 text-sm mt-1 uppercase tracking-widest" id="display-niath">NIATH: -</p>
+            </div>
+            <img src="https://i.ibb.co.com/ZRGH2R6Y/9am9pm-3.png" class="w-20 opacity-20 hidden md:block">
+          </div>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-green-500 text-center">
+              <p class="text-xs font-bold text-slate-400 uppercase mb-1">Hadir</p>
+              <p id="stat-hadir" class="text-3xl font-black text-green-600">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-amber-500 text-center">
+              <p class="text-xs font-bold text-slate-400 uppercase mb-1">Sakit</p>
+              <p id="stat-sakit" class="text-3xl font-black text-amber-600">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-red-500 text-center">
+              <p class="text-xs font-bold text-slate-400 uppercase mb-1">Alpa</p>
+              <p id="stat-alpa" class="text-3xl font-black text-red-600">0</p>
+            </div>
+          </div>
+          <div class="bg-white p-8 rounded-3xl shadow-sm border leading-relaxed">
+            <h3 class="text-xl font-bold text-emerald-900 mb-6 flex items-center gap-2">📜 Sejarah Thifan Po Khan</h3>
+            <div class="text-slate-600 text-sm space-y-4 text-justify">
+              <p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh tokoh misterius Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam. Ilmu ini berkembang secara eksklusif dalam tradisi pesantren bangsawan dan militer di lingkungan Khilafah, mulai dari Bani Seljuk, Dinasti Ayyubiyah di bawah Shalahuddin Al Ayyubi, hingga menjadi bagian dari strategi tempur perwira Khilafah Utsmaniyah.</p>
+              <p>Thifan Po Khan masuk ke Nusantara pada abad ke-16 melalui ekspansi militer Khilafah Utsmaniyah yang dikirim Sultan Selim II untuk membantu Kesultanan Aceh melawan Portugis, di mana para instruktur militernya sekaligus memperkenalkan bela diri ini. Estafet keilmuan ini kemudian menyebar ke tanah Sumatera pada abad ke-18 melalui peran Tuanku Rao di Bonjol, hingga akhirnya mencapai Pulau Jawa melalui Haji Hang Uding yang menggunakan ilmu ini untuk memproteksi pedagang pribumi dalam jaringan Serikat Dagang Islam (SDI). Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> yang melahirkan ribuan murid di seluruh Indonesia, dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-program" class="content-section hidden space-y-6">
+          <div class="bg-white p-8 rounded-3xl shadow-sm border">
+            <h3 class="text-2xl font-bold text-emerald-900 mb-8 border-b-2 border-emerald-50 pb-2 italic">🎯 Target & Program Latihan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-sm">
+              <div class="bg-emerald-50 p-6 rounded-2xl">
+                <h4 class="font-bold text-emerald-800 mb-3 uppercase tracking-tighter">📅 Program Tahunan</h4>
+                <ul class="space-y-2">
+                  <li>• <strong>Ujian Kenaikan Tingkat:</strong> Dilaksanakan setiap tahun untuk mengevaluasi kemampuan dan menentukan kenaikan sabuk.</li>
+                  <li>• <strong>Pertandingan Tahunan:</strong> Kompetisi internal dan eksternal untuk mengasah mental dan sportivitas.</li>
+                </ul>
+              </div>
+              <div class="bg-amber-50 p-6 rounded-2xl">
+                <h4 class="font-bold text-amber-800 mb-3 uppercase tracking-tighter">🌓 Program Semesteran</h4>
+                <ul class="space-y-2">
+                  <li>• <strong>Uji Kompetensi:</strong> Evaluasi berkala setiap semester untuk mengukur perkembangan teknik.</li>
+                  <li>• <strong>Fun Match:</strong> Pertandingan persahabatan antar kelas untuk kebersamaan.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="bg-slate-50 p-6 rounded-2xl">
+              <h4 class="font-bold text-slate-800 mb-4 uppercase text-center">🏁 Target Pembelajaran</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs md:text-sm text-slate-600 font-medium">
+                <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Teknik dasar hingga lanjutan</div>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Karakter disiplin & tanggung jawab</div>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Kesehatan fisik & mental santri</div>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-lg shadow-sm">✅ Integrasi nilai-nilai Islam</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-dokumentasi" class="content-section hidden">
+          <div class="bg-white p-8 rounded-3xl shadow-sm border">
+            <h3 class="text-2xl font-bold text-emerald-900 mb-6 uppercase tracking-wider">📸 Galeri Dokumentasi</h3>
+            
+            <div id="dynamic-docs" class="mb-8">
+              </div>
+
+            <div class="flex gap-2 mb-6 text-[10px] font-bold uppercase overflow-x-auto pb-2">
+              <button class="px-4 py-2 bg-emerald-600 text-white rounded-lg">Semua</button>
+              <button class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg">Foto</button>
+              <button class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg">Video</button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">🥋</div><p class="text-[9px] font-bold text-slate-500 uppercase">Latihan Rutin</p></div>
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">📹</div><p class="text-[9px] font-bold text-slate-500 uppercase">Video Latihan</p></div>
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">📜</div><p class="text-[9px] font-bold text-slate-500 uppercase">Ujian Tingkat</p></div>
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="text-2xl mb-1">🏆</div><p class="text-[9px] font-bold text-slate-500 uppercase">Pertandingan</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-struktur" class="content-section hidden">
+          <div class="bg-white p-8 rounded-3xl shadow-sm border overflow-x-auto">
+            <h3 class="text-xl font-bold text-emerald-900 mb-8 text-center uppercase tracking-widest font-black">👨‍👩‍👧‍👦 Struktur Pengurus Badur Khan</h3>
+            <div class="org-chart text-[9px] md:text-sm">
+              <div class="org-level"><div class="org-box"><div class="text-[8px] opacity-70 uppercase">Pembina</div><div class="font-bold">Ust. Ali Yahya, B.A.</div></div></div>
+              <div class="org-level">
+                <div class="org-box bg-amber-600"><div class="text-[8px] opacity-70 uppercase">Ketua</div><div class="font-bold">M. Nikhat Al-Badruni</div></div>
+                <div class="org-box bg-amber-500"><div class="text-[8px] opacity-70 uppercase">Wakil Ketua</div><div class="font-bold">Ahmad Jariir</div></div>
+              </div>
+              <div class="org-level">
+                <div class="org-box bg-blue-600"><div class="text-[8px] opacity-70 uppercase">Sekretaris</div><div class="font-bold">Shalahuddin Maulana A</div></div>
+                <div class="org-box bg-blue-500"><div class="text-[8px] opacity-70 uppercase">Sekretaris 2</div><div class="font-bold">Fahri Rachmad F</div></div>
+              </div>
+              <div class="org-level">
+                <div class="org-box bg-yellow-600"><div class="text-[8px] opacity-70 uppercase">Bendahara</div><div class="font-bold">Akio Ramadhana R</div></div>
+                <div class="org-box bg-yellow-500"><div class="text-[8px] opacity-70 uppercase">Bendahara 2</div><div class="font-bold">Agha Shiddiq A</div></div>
+              </div>
+              <div class="org-level">
+                <div class="org-box bg-slate-600">Humas: M. Fauzan & Nabil H.</div>
+                <div class="org-box bg-slate-600">Korlap: Narotama & Shafwan</div>
+              </div>
+              <div class="org-level">
+                <div class="org-box bg-emerald-700">Kesehatan: Hibrizi Asyura</div>
+                <div class="org-box bg-emerald-700">Konsumsi: M Azfar Azka</div>
+                <div class="org-box bg-emerald-700">Inventaris: Tansri Ubaidillah</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-iuran" class="content-section hidden">
+          <div class="bg-white p-8 rounded-3xl shadow-sm border text-center">
+            <h3 class="text-xl font-bold text-emerald-900 mb-6 uppercase tracking-wider font-black">💰 Iuran Bulanan</h3>
+            <div class="p-8 bg-emerald-50 rounded-2xl border-2 border-emerald-100">
+              <p class="text-xs text-emerald-600 font-bold uppercase mb-2 italic">Status Pembayaran</p>
+              <p id="display-iuran" class="text-3xl font-black text-emerald-800 italic uppercase">Memuat...</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-biodata" class="content-section hidden">
+          <div class="bg-white p-8 rounded-3xl shadow-sm border space-y-4">
+            <h3 class="text-xl font-bold text-emerald-900 mb-6 uppercase tracking-wider font-black">👤 Biodata Santri</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm divide-y">
+              <div class="py-2 flex justify-between"><span>Nama</span><span id="bio-nama" class="font-bold">-</span></div>
+              <div class="py-2 flex justify-between"><span>Umur</span><span id="bio-umur" class="font-bold">-</span></div>
+              <div class="py-2 flex justify-between"><span>Kelas</span><span id="bio-kelas" class="font-bold">-</span></div>
+              <div class="py-2 flex justify-between"><span>Tingkat</span><span id="bio-tingkat" class="font-bold text-emerald-600 uppercase">-</span></div>
+              <div class="py-2 flex flex-col pt-4"><span>Alamat</span><span id="bio-alamat" class="font-medium mt-1">-</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-sertifikat" class="content-section hidden space-y-6">
+          <div id="cert-area" class="certificate-container p-12 text-center max-w-2xl mx-auto aspect-[4/3] flex flex-col justify-between">
+            <div class="certificate-border"></div>
+            <div class="relative z-10 text-center">
+              <img src="https://i.ibb.co.com/ZRGH2R6Y/9am9pm-3.png" class="w-16 mx-auto mb-4 opacity-30">
+              <h2 class="font-certificate text-3xl text-amber-900 font-bold mb-6 italic tracking-widest">SERTIFIKAT KELULUSAN</h2>
+              <p class="text-slate-500 text-xs italic">Diberikan kepada:</p>
+              <h3 id="cert-nama" class="font-certificate text-2xl font-bold text-emerald-900 my-4 border-b-2 border-amber-400 inline-block px-6">-</h3>
+              <p class="text-slate-600 text-xs mt-4">Telah dinyatakan Lulus pada tingkat:</p>
+              <p id="cert-tingkat" class="text-emerald-700 font-bold text-2xl my-2 uppercase tracking-widest">-</p>
+            </div>
+            <div class="relative z-10 flex justify-center mt-8 text-[10px] font-bold text-slate-400">
+              <div class="text-center">
+                PEMBINA BADUR KHAN<br><br><br><br>
+                <span class="text-slate-800 uppercase border-b border-slate-800 px-6">Ust. Ali Yahya, B.A.</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="downloadPDF()" class="w-full py-4 bg-amber-600 text-white font-bold rounded-xl shadow-lg hover:bg-amber-700 transition uppercase tracking-widest">📥 DOWNLOAD SERTIFIKAT (PDF)</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzv26t2Ri2_nj2TYR35W84SpdwsXoRxMMXZuNDelscdU5qs4B3HMkmimo-lZ36flK6u/exec';
+
+    function updateClock() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('id-ID', { hour12: false });
+      const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      
+      if(document.getElementById('current-time-login')) document.getElementById('current-time-login').innerText = timeStr;
+      if(document.getElementById('current-day-login')) document.getElementById('current-day-login').innerText = now.toLocaleDateString('id-ID', { weekday: 'long' });
+      if(document.getElementById('current-date-login')) document.getElementById('current-date-login').innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      
+      if(document.getElementById('header-clock')) document.getElementById('header-clock').innerText = timeStr;
+      if(document.getElementById('header-date')) document.getElementById('header-date').innerText = dateStr;
+
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+      let academicYearStr = (month >= 7) ? `${year}/${year + 1}` : `${year - 1}/${year}`;
+      let semesterStr = (month >= 7 && month <= 12) ? "Semester Ganjil" : "Semester Genap";
+      
+      if(document.getElementById('academic-year')) document.getElementById('academic-year').innerText = academicYearStr;
+      if(document.getElementById('academic-semester')) document.getElementById('academic-semester').innerText = semesterStr;
     }
-  }
-}
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.getElementById('sidebar-overlay').classList.toggle('active');
+    }
+
+    function navTo(section) {
+      document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+      document.getElementById(`content-${section}`).classList.remove('hidden');
+      if(window.innerWidth < 1024) toggleSidebar();
+    }
+
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const niath = document.getElementById('niath-input').value.trim();
+      if(!niath) return;
+      const btn = e.target.querySelector('button');
+      btn.innerText = "LOADING..."; btn.disabled = true;
+
+      const callbackName = 'jsonp_cb_' + Math.floor(Math.random() * 1000000);
+      window[callbackName] = function(data) {
+        delete window[callbackName];
+        document.head.removeChild(scriptTag);
+        if(data.error) {
+          document.getElementById('error-msg').classList.remove('hidden');
+          btn.innerText = "MASUK SISTEM"; btn.disabled = false;
+        } else {
+          populateDashboard(data);
+          document.getElementById('login-page').classList.add('hidden');
+          document.getElementById('dashboard-page').classList.remove('hidden');
+        }
+      };
+      const scriptTag = document.createElement('script');
+      scriptTag.src = `${SCRIPT_URL}?niath=${niath}&callback=${callbackName}`;
+      document.head.appendChild(scriptTag);
+    });
+
+    function populateDashboard(d) {
+      document.getElementById('display-nama').innerText = d.nama;
+      document.getElementById('display-niath').innerText = `NIATH: ${d.niath}`;
+      document.getElementById('stat-hadir').innerText = d.kehadiran || 0;
+      document.getElementById('stat-sakit').innerText = d.sakit || 0;
+      document.getElementById('stat-alpa').innerText = d.alpa || 0;
+      
+      let statusIuran = d.iuran ? d.iuran.toString().replace(/\"/g, "") : "Lunas";
+      document.getElementById('display-iuran').innerText = statusIuran;
+      
+      document.getElementById('bio-nama').innerText = d.nama;
+      document.getElementById('bio-umur').innerText = `${d.umur} Tahun`;
+      document.getElementById('bio-kelas').innerText = d.kelas; 
+      document.getElementById('bio-tingkat').innerText = d.tingkat;
+      document.getElementById('bio-alamat').innerText = d.alamat;
+      document.getElementById('cert-nama').innerText = d.nama;
+      document.getElementById('cert-tingkat').innerText = d.tingkat;
+
+      const dynamicDocs = document.getElementById('dynamic-docs');
+      if (dynamicDocs) {
+        if (d.foto_lat || d.video_lat) {
+          dynamicDocs.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+              ${d.foto_lat ? `
+                <div class="space-y-2 text-center">
+                  <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Foto Terbaru</p>
+                  <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+                    <img src="${d.foto_lat}" class="w-full h-auto object-cover aspect-video" onerror="this.src='https://placehold.co/600x400?text=Foto+Gagal+Dimuat'">
+                  </div>
+                </div>` : ''}
+              ${d.video_lat ? `
+                <div class="space-y-2 text-center">
+                  <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest">Video Terbaru</p>
+                  <div class="rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-black">
+                    <video controls class="w-full aspect-video">
+                      <source src="${d.video_lat}" type="video/mp4">
+                    </video>
+                  </div>
+                </div>` : ''}
+            </div>`;
+        }
+      }
+    }
+
+    async function downloadPDF() {
+      const area = document.getElementById('cert-area');
+      const canvas = await html2canvas(area, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('l', 'mm', 'a4');
+      pdf.addImage(imgData, 'PNG', 10, 10, 277, 190);
+      pdf.save(`Sertifikat-BadurKhan.pdf`);
+    }
+  </script>
+</body>
+</html>
