@@ -17,7 +17,7 @@
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; }
     
-    /* Animasi Gerak Naik Turun Lambat */
+    /* Animasi Slow Float untuk Logo */
     @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
     .animate-float-slow { animation: floatSlow 4s ease-in-out infinite; }
     
@@ -45,7 +45,7 @@
           <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-500"></div>
           
           <div class="inline-block animate-float-slow mb-6">
-            <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-32 h-32 object-contain" alt="Logo Badur Khan">
+            <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-48 h-48 object-contain" alt="Logo Badur Khan">
           </div>
 
           <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter italic uppercase">Badur Khan</h1>
@@ -62,8 +62,8 @@
     <div id="dashboard-page" class="hidden min-h-screen">
       <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[90] hidden" onclick="toggleSidebar()"></div>
       <aside id="sidebar" class="fixed top-0 w-[300px] h-full bg-white shadow-2xl flex flex-col p-8 transition-all duration-300">
-        <div class="flex items-center gap-4 mb-10 pb-6 border-b border-slate-100">
-          <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-12 h-12 object-contain">
+        <div class="flex flex-col items-center gap-4 mb-10 pb-6 border-b border-slate-100 text-center">
+          <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-20 h-20 object-contain">
           <div>
             <h2 class="text-lg font-extrabold text-emerald-900 italic uppercase leading-none">Badur Khan</h2>
             <p class="text-[9px] text-slate-400 font-bold tracking-widest mt-1 uppercase">Monitoring System</p>
@@ -108,36 +108,36 @@
 
           <div class="bg-gradient-to-br from-emerald-800 to-emerald-950 p-12 rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden text-center md:text-left">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
-            <div class="relative z-10">
-              <h2 class="text-lg font-medium opacity-80 mb-1 italic uppercase">Ahlan wa Sahlan,</h2>
+            <div class="relative z-10 text-center md:text-left">
+              <h2 class="text-lg font-medium opacity-80 mb-1 italic">Ahlan wa Sahlan,</h2>
               <p class="text-5xl font-extrabold text-amber-300 tracking-tighter mb-4 uppercase" id="display-nama">-</p>
               <span class="px-5 py-2 bg-white/10 rounded-2xl text-[10px] font-black tracking-[0.2em] uppercase" id="display-niath">NIATH: -</span>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-emerald-500 hover:-translate-y-2 transition-transform uppercase">
-              <p class="text-xs font-black text-slate-300 mb-2">Hadir</p>
+            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-emerald-500 hover:-translate-y-2 transition-transform">
+              <p class="text-xs font-black text-slate-300 uppercase mb-2">Hadir</p>
               <p id="stat-hadir" class="text-6xl font-black text-emerald-600">0</p>
             </div>
-            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-amber-400 hover:-translate-y-2 transition-transform uppercase">
-              <p class="text-xs font-black text-slate-300 mb-2">Sakit</p>
+            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-amber-400 hover:-translate-y-2 transition-transform">
+              <p class="text-xs font-black text-slate-300 uppercase mb-2">Sakit</p>
               <p id="stat-sakit" class="text-6xl font-black text-amber-500">0</p>
             </div>
-            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-red-500 hover:-translate-y-2 transition-transform uppercase">
-              <p class="text-xs font-black text-slate-300 mb-2">Alpa</p>
+            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-red-500 hover:-translate-y-2 transition-transform">
+              <p class="text-xs font-black text-slate-300 uppercase mb-2">Alpa</p>
               <p id="stat-alpa" class="text-6xl font-black text-red-500">0</p>
             </div>
           </div>
 
           <div class="bg-white p-12 rounded-[3rem] shadow-sm border border-slate-100 italic">
             <h3 class="text-2xl font-black text-emerald-950 mb-8 flex items-center gap-3 italic">
-              <span class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-2xl text-xl">📜</span>
+              <span class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-2xl text-xl uppercase">📜</span>
               Sejarah Thifan Po Khan
             </h3>
             <div class="text-slate-600 text-sm leading-loose space-y-6 text-justify">
-              <p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki[cite: 29, 105]. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam[cite: 105].</p>
-              <p>Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah[cite: 108].</p>
+              [cite_start]<p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki[cite: 105]. [cite_start]Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam[cite: 105].</p>
+              [cite_start]<p>Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah[cite: 108].</p>
             </div>
           </div>
         </div>
@@ -153,29 +153,29 @@
               <div class="flex gap-10">
                 <div class="org-box bg-amber-600 !text-white">
                   <p class="text-[9px] uppercase font-black opacity-60 mb-1 tracking-widest uppercase">Ketua</p>
-                  <p class="font-black text-sm uppercase">M. Nikhat Al-Badruni</p>
+                  <p class="font-black text-sm uppercase">M. [cite_start]Nikhat Al-Badruni [cite: 117]</p>
                 </div>
                 <div class="org-box bg-amber-500 !text-white">
                   <p class="text-[9px] uppercase font-black opacity-60 mb-1 tracking-widest uppercase">Wakil Ketua</p>
-                  <p class="font-black text-sm uppercase">Ahmad Jariir</p>
+                  [cite_start]<p class="font-black text-sm uppercase">Ahmad Jariir [cite: 117]</p>
                 </div>
               </div>
               <div class="flex gap-6">
                 <div class="org-box border-blue-100 bg-blue-50">
                   <p class="text-[9px] uppercase font-black text-blue-400 mb-1 tracking-widest uppercase">Sekretaris</p>
-                  <p class="font-black text-xs text-blue-900 uppercase">Shalahuddin Maulana A & Fahri Rachmad F</p>
+                  [cite_start]<p class="font-black text-xs text-blue-900 uppercase">Shalahuddin Maulana A & Fahri Rachmad F [cite: 117]</p>
                 </div>
                 <div class="org-box border-yellow-100 bg-yellow-50">
                   <p class="text-[9px] uppercase font-black text-yellow-600 mb-1 tracking-widest uppercase">Bendahara</p>
-                  <p class="font-black text-xs text-yellow-900 uppercase">Akio Ramadhana R & Agha Shiddiq A</p>
+                  [cite_start]<p class="font-black text-xs text-yellow-900 uppercase">Akio Ramadhana R & Agha Shiddiq A [cite: 118]</p>
                 </div>
               </div>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Humas: M. Fauzan & Nabil H.</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Korlap: Narotama & Shafwan</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Kesehatan: Hibrizi Asyura</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Konsumsi: M Azfar Azka</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Inventaris: Tansri Ubaidillah</div>
+                [cite_start]<div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Humas: M. Fauzan & Nabil H. [cite: 118]</div>
+                [cite_start]<div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Korlap: Narotama & Shafwan [cite: 118]</div>
+                [cite_start]<div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Kesehatan: Hibrizi Asyura [cite: 118]</div>
+                [cite_start]<div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Konsumsi: M Azfar Azka [cite: 118]</div>
+                [cite_start]<div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Inventaris: Tansri Ubaidillah [cite: 119]</div>
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@
             <div class="certificate-border"></div>
             <div class="relative z-10">
               <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 mx-auto mb-10 opacity-30">
-              <h2 class="font-certificate text-5xl text-amber-900 font-bold mb-10 italic uppercase">Sertifikat Kelulusan</h2>
+              [cite_start]<h2 class="font-certificate text-5xl text-amber-900 font-bold mb-10 italic uppercase">Sertifikat Kelulusan [cite: 40, 122]</h2>
               <p class="text-slate-500 text-sm font-medium italic mb-2 uppercase">Diberikan dengan rasa syukur kepada:</p>
               <h3 id="cert-nama" class="font-certificate text-5xl font-bold text-emerald-950 my-10 border-b-4 border-amber-300 inline-block px-12 italic uppercase">-</h3>
               <p class="text-slate-600 text-sm font-medium mt-10 tracking-[0.1em] uppercase">Telah dinyatakan lulus dan mencapai standar tingkat:</p>
@@ -210,25 +210,25 @@
             </div>
             <div class="relative z-10 flex justify-center mt-12 text-center">
               <div>
-                <p class="text-slate-400 text-[10px] font-bold mb-20 uppercase tracking-[0.3em]">Pembina Thifan Badur Khan</p>
+                [cite_start]<p class="text-slate-400 text-[10px] font-bold mb-20 uppercase tracking-[0.3em]">Pembina Thifan Badur Khan [cite: 42, 123]</p>
                 <div class="border-b-2 border-emerald-900 w-72 mx-auto mb-2"></div>
-                <span class="text-emerald-950 font-black uppercase text-base tracking-widest uppercase italic font-black">Ust. Ali Yahya, B.A.</span>
+                <span class="text-emerald-950 font-black uppercase text-base tracking-widest uppercase italic font-black">Ust. [cite_start]Ali Yahya, B.A. [cite: 43, 124]</span>
               </div>
             </div>
           </div>
-          <button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-[2rem] shadow-2xl transition-all uppercase tracking-[0.2em] text-xs hover:bg-black active:scale-95 italic">📥 Download Sertifikat (PDF)</button>
+          [cite_start]<button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-[2rem] shadow-2xl transition-all uppercase tracking-[0.2em] text-xs hover:bg-black active:scale-95 italic">📥 Download PDF [cite: 43, 124]</button>
         </div>
 
         <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8">
           <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border text-center uppercase">
-            <h3 class="text-2xl font-black text-emerald-950 mb-10 italic">Program Pelatihan</h3>
+            [cite_start]<h3 class="text-2xl font-black text-emerald-950 mb-10 italic">Program Pelatihan [cite: 108]</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic uppercase">
               <div class="bg-emerald-50 p-10 rounded-[2.5rem] border border-emerald-100">
-                <h4 class="font-black text-emerald-800 mb-4 uppercase tracking-widest">📅 Tahunan</h4>
-                <ul class="space-y-2"><li>• Ujian Kenaikan Tingkat (UKT)</li><li>• Pertandingan Antar Caban</li></ul>
+                [cite_start]<h4 class="font-black text-emerald-800 mb-4 uppercase tracking-widest">📅 Tahunan [cite: 45, 109]</h4>
+                <ul class="space-y-2"><li>• Ujian Kenaikan Tingkat (UKT)</li><li>• Pertandingan Antar Cabang</li></ul>
               </div>
               <div class="bg-amber-50 p-10 rounded-[2.5rem] border border-amber-100">
-                <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest">🌓 Semesteran</h4>
+                [cite_start]<h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest">🌓 Semesteran [cite: 46, 110]</h4>
                 <ul class="space-y-2"><li>• Uji Kompetensi Teknik</li><li>• Fun Match & Silaturahmi</li></ul>
               </div>
             </div>
@@ -237,14 +237,14 @@
 
         <div id="content-dokumentasi" class="content-section hidden">
            <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border border-slate-100 text-center uppercase">
-             <h3 class="text-2xl font-black mb-10 uppercase">Galeri Aktivitas</h3>
+             [cite_start]<h3 class="text-2xl font-black mb-10 uppercase">Galeri Aktivitas [cite: 33, 113]</h3>
              <div id="dynamic-docs" class="mb-12"><p class="py-20 bg-slate-50 rounded-[3rem] border-4 border-dashed text-slate-400 font-bold italic">Menunggu update data Pelatih...</p></div>
            </div>
         </div>
 
         <div id="content-iuran" class="content-section hidden">
           <div class="bg-white p-16 rounded-[4rem] shadow-sm border border-slate-100 text-center uppercase">
-            <h3 class="text-3xl font-black text-emerald-950 mb-12 italic tracking-widest">Administrasi Keuangan</h3>
+            [cite_start]<h3 class="text-3xl font-black text-emerald-950 mb-12 italic tracking-widest uppercase">Administrasi Keuangan [cite: 38, 120]</h3>
             <div class="max-w-md mx-auto p-12 bg-emerald-50 rounded-[3.5rem] border border-emerald-100 shadow-inner">
               <p id="display-iuran" class="text-6xl font-black text-emerald-900 italic tracking-tighter uppercase">-</p>
             </div>
