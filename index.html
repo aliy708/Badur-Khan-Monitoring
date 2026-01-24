@@ -17,15 +17,17 @@
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; }
     
-    /* Animasi Logo Naik Turun Lambat */
+    /* Animasi Gerak Naik Turun Lambat */
     @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
     .animate-float-slow { animation: floatSlow 4s ease-in-out infinite; }
+    
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
     #sidebar { transition: all 0.3s ease-in-out; z-index: 100; left: -300px; }
     #sidebar.active { left: 0; }
     .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); }
-    .org-box { background: white; padding: 1rem; border-radius: 1.25rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid #f1f5f9; text-align: center; min-width: 160px; transition: transform 0.2s; }
-    .org-box:hover { transform: translateY(-3px); }
+    .org-box { background: white; padding: 1rem; border-radius: 1.25rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid #f1f5f9; text-align: center; min-width: 160px; }
     .certificate-container { background: #fffcf0; border: 15px double #d4af37; position: relative; }
     .certificate-border { position: absolute; top: 1rem; left: 1rem; right: 1rem; bottom: 1rem; border: 2px solid #d4af37; border-radius: 0.5rem; pointer-events: none; }
   </style>
@@ -43,7 +45,7 @@
           <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-500"></div>
           
           <div class="inline-block animate-float-slow mb-6">
-            <img src="https://i.ibb.co.com/R40DcxQR/Gemini-Generated-Image-2dt1jc2dt1jc2dt1.png" class="w-32 h-32 object-contain rounded-full" alt="Logo">
+            <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-32 h-32 object-contain" alt="Logo Badur Khan">
           </div>
 
           <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter italic uppercase">Badur Khan</h1>
@@ -61,7 +63,7 @@
       <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[90] hidden" onclick="toggleSidebar()"></div>
       <aside id="sidebar" class="fixed top-0 w-[300px] h-full bg-white shadow-2xl flex flex-col p-8 transition-all duration-300">
         <div class="flex items-center gap-4 mb-10 pb-6 border-b border-slate-100">
-          <img src="https://i.ibb.co.com/R40DcxQR/Gemini-Generated-Image-2dt1jc2dt1jc2dt1.png" class="w-12 h-12 object-contain rounded-full">
+          <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-12 h-12 object-contain">
           <div>
             <h2 class="text-lg font-extrabold text-emerald-900 italic uppercase leading-none">Badur Khan</h2>
             <p class="text-[9px] text-slate-400 font-bold tracking-widest mt-1 uppercase">Monitoring System</p>
@@ -107,23 +109,23 @@
           <div class="bg-gradient-to-br from-emerald-800 to-emerald-950 p-12 rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden text-center md:text-left">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20"></div>
             <div class="relative z-10">
-              <h2 class="text-lg font-medium opacity-80 mb-1 italic">Ahlan wa Sahlan,</h2>
-              <p class="text-5xl font-extrabold text-amber-300 tracking-tighter mb-4" id="display-nama">-</p>
+              <h2 class="text-lg font-medium opacity-80 mb-1 italic uppercase">Ahlan wa Sahlan,</h2>
+              <p class="text-5xl font-extrabold text-amber-300 tracking-tighter mb-4 uppercase" id="display-nama">-</p>
               <span class="px-5 py-2 bg-white/10 rounded-2xl text-[10px] font-black tracking-[0.2em] uppercase" id="display-niath">NIATH: -</span>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-emerald-500 hover:-translate-y-2 transition-transform">
-              <p class="text-xs font-black text-slate-300 uppercase mb-2">Hadir</p>
+            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-emerald-500 hover:-translate-y-2 transition-transform uppercase">
+              <p class="text-xs font-black text-slate-300 mb-2">Hadir</p>
               <p id="stat-hadir" class="text-6xl font-black text-emerald-600">0</p>
             </div>
-            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-amber-400 hover:-translate-y-2 transition-transform">
-              <p class="text-xs font-black text-slate-300 uppercase mb-2">Sakit</p>
+            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-amber-400 hover:-translate-y-2 transition-transform uppercase">
+              <p class="text-xs font-black text-slate-300 mb-2">Sakit</p>
               <p id="stat-sakit" class="text-6xl font-black text-amber-500">0</p>
             </div>
-            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-red-500 hover:-translate-y-2 transition-transform">
-              <p class="text-xs font-black text-slate-300 uppercase mb-2">Alpa</p>
+            <div class="bg-white p-10 rounded-[3rem] shadow-sm border-b-8 border-red-500 hover:-translate-y-2 transition-transform uppercase">
+              <p class="text-xs font-black text-slate-300 mb-2">Alpa</p>
               <p id="stat-alpa" class="text-6xl font-black text-red-500">0</p>
             </div>
           </div>
@@ -134,110 +136,117 @@
               Sejarah Thifan Po Khan
             </h3>
             <div class="text-slate-600 text-sm leading-loose space-y-6 text-justify">
-              <p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam.</p>
-              <p>Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah.</p>
+              <p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki[cite: 29, 105]. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam[cite: 105].</p>
+              <p>Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah[cite: 108].</p>
             </div>
           </div>
         </div>
 
         <div id="content-struktur" class="content-section hidden animate-fadeInUp">
           <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border border-slate-100 text-center overflow-x-auto">
-            <h3 class="text-2xl font-black text-emerald-950 mb-12 uppercase tracking-[0.2em]">Struktur Kepengurusan</h3>
+            <h3 class="text-2xl font-black text-emerald-950 mb-12 uppercase tracking-[0.2em]">Struktur Kepengurusan Badur Khan</h3>
             <div class="flex flex-col items-center gap-8 min-w-[600px] py-4">
               <div class="org-box bg-emerald-900 !text-white !min-w-[240px]">
                 <p class="text-[9px] uppercase font-black opacity-60 mb-1 tracking-widest uppercase">Pembina Utama</p>
                 <p class="font-black text-base uppercase">Ust. Ali Yahya, B.A.</p>
               </div>
               <div class="flex gap-10">
-                <div class="org-box bg-amber-600 !text-white"> Ketua: M. Nikhat Al-Badruni </div>
-                <div class="org-box bg-amber-500 !text-white"> Wakil: Ahmad Jariir </div>
+                <div class="org-box bg-amber-600 !text-white">
+                  <p class="text-[9px] uppercase font-black opacity-60 mb-1 tracking-widest uppercase">Ketua</p>
+                  <p class="font-black text-sm uppercase">M. Nikhat Al-Badruni</p>
+                </div>
+                <div class="org-box bg-amber-500 !text-white">
+                  <p class="text-[9px] uppercase font-black opacity-60 mb-1 tracking-widest uppercase">Wakil Ketua</p>
+                  <p class="font-black text-sm uppercase">Ahmad Jariir</p>
+                </div>
               </div>
               <div class="flex gap-6">
-                <div class="org-box bg-blue-50 border-blue-100 text-xs">Sekretaris: Shalahuddin Maulana A & Fahri Rachmad F</div>
-                <div class="org-box bg-yellow-50 border-yellow-100 text-xs">Bendahara: Akio Ramadhana R & Agha Shiddiq A</div>
+                <div class="org-box border-blue-100 bg-blue-50">
+                  <p class="text-[9px] uppercase font-black text-blue-400 mb-1 tracking-widest uppercase">Sekretaris</p>
+                  <p class="font-black text-xs text-blue-900 uppercase">Shalahuddin Maulana A & Fahri Rachmad F</p>
+                </div>
+                <div class="org-box border-yellow-100 bg-yellow-50">
+                  <p class="text-[9px] uppercase font-black text-yellow-600 mb-1 tracking-widest uppercase">Bendahara</p>
+                  <p class="font-black text-xs text-yellow-900 uppercase">Akio Ramadhana R & Agha Shiddiq A</p>
+                </div>
               </div>
               <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-                <div class="org-box bg-slate-50 text-[10px] font-bold uppercase italic">Humas: M. Fauzan & Nabil H.</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold uppercase italic">Korlap: Narotama & Shafwan</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold uppercase italic">Kesehatan: Hibrizi Asyura</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold uppercase italic">Konsumsi: M Azfar Azka</div>
-                <div class="org-box bg-slate-50 text-[10px] font-bold uppercase italic">Inventaris: Tansri Ubaidillah</div>
+                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Humas: M. Fauzan & Nabil H.</div>
+                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Korlap: Narotama & Shafwan</div>
+                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Kesehatan: Hibrizi Asyura</div>
+                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Konsumsi: M Azfar Azka</div>
+                <div class="org-box bg-slate-50 text-[10px] font-bold italic uppercase">Inventaris: Tansri Ubaidillah</div>
               </div>
             </div>
           </div>
         </div>
 
         <div id="content-biodata" class="content-section hidden animate-fadeInUp">
-          <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100 max-w-2xl mx-auto text-center">
-            <h3 class="text-2xl font-black text-emerald-950 mb-10 uppercase tracking-[0.2em]">Biodata Santri</h3>
+          <div class="bg-white p-10 rounded-[3rem] shadow-sm border border-slate-100 max-w-2xl mx-auto">
+            <h3 class="text-2xl font-black text-emerald-950 mb-10 text-center uppercase tracking-[0.2em]">Biodata Santri</h3>
             <div class="space-y-4">
-              <div class="flex justify-between p-5 bg-slate-50 rounded-[2rem]"><span class="font-bold text-slate-400 uppercase text-xs">Nama</span><span id="bio-nama" class="font-extrabold text-emerald-900 text-right">-</span></div>
-              <div class="flex justify-between p-5 bg-white rounded-[2rem] border"><span class="font-bold text-slate-400 uppercase text-xs">Umur</span><span id="bio-umur" class="font-extrabold text-slate-800 text-right">-</span></div>
-              <div class="flex justify-between p-5 bg-slate-50 rounded-[2rem]"><span class="font-bold text-slate-400 uppercase text-xs">Kelas</span><span id="bio-kelas" class="font-extrabold text-slate-800 text-right">-</span></div>
-              <div class="flex justify-between p-5 bg-white rounded-[2rem] border"><span class="font-bold text-slate-400 uppercase text-xs">Sabuk</span><span id="bio-tingkat" class="font-extrabold text-emerald-600 text-right">-</span></div>
-              <div class="p-8 bg-slate-900 rounded-[2.5rem] mt-8 text-white text-center shadow-xl">
-                <p class="text-[10px] uppercase font-black text-emerald-400 mb-2 tracking-widest">Domisili Tercatat</p>
-                <p id="bio-alamat" class="text-sm font-medium leading-relaxed uppercase">-</p>
+              <div class="flex justify-between p-5 bg-slate-50 rounded-[2rem] uppercase"><span class="font-bold text-slate-400 text-xs">Nama</span><span id="bio-nama" class="font-extrabold text-emerald-900 text-right">-</span></div>
+              <div class="flex justify-between p-5 bg-white rounded-[2rem] border uppercase"><span class="font-bold text-slate-400 text-xs">Usia</span><span id="bio-umur" class="font-extrabold text-slate-800 text-right">-</span></div>
+              <div class="flex justify-between p-5 bg-slate-50 rounded-[2rem] uppercase"><span class="font-bold text-slate-400 text-xs">Kelas</span><span id="bio-kelas" class="font-extrabold text-slate-800 text-right">-</span></div>
+              <div class="flex justify-between p-5 bg-white rounded-[2rem] border uppercase"><span class="font-bold text-slate-400 text-xs">Sabuk</span><span id="bio-tingkat" class="font-extrabold text-emerald-600 text-right">-</span></div>
+              <div class="p-8 bg-slate-900 rounded-[2.5rem] mt-8 text-white text-center shadow-xl shadow-slate-200 uppercase">
+                <p class="text-[10px] uppercase font-black text-emerald-400 mb-2 tracking-widest">Domisili</p>
+                <p id="bio-alamat" class="text-sm font-medium leading-relaxed">-</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div id="content-iuran" class="content-section hidden animate-fadeInUp text-center">
-          <div class="bg-white p-16 rounded-[4rem] shadow-sm border border-slate-100">
-            <h3 class="text-3xl font-black text-emerald-950 mb-12 uppercase italic tracking-widest uppercase">Administrasi</h3>
-            <div class="max-w-md mx-auto p-12 bg-emerald-50 rounded-[3.5rem] border border-emerald-100 shadow-inner">
-              <p id="display-iuran" class="text-6xl font-black text-emerald-900 italic tracking-tighter uppercase">-</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="content-dokumentasi" class="content-section hidden animate-fadeInUp text-center">
-          <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border border-slate-100">
-            <h3 class="text-2xl font-black text-emerald-950 mb-12 uppercase tracking-tighter uppercase">Galeri Dokumentasi</h3>
-            <div id="dynamic-docs" class="mb-12">
-              <div class="text-center py-20 bg-slate-50 rounded-[3rem] border-4 border-dashed border-slate-100">
-                <p class="text-slate-400 text-xs italic font-bold">Media akan tampil setelah sinkronisasi Pelatih.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="content-sertifikat" class="content-section hidden space-y-12 animate-fadeInUp text-center">
-          <div id="cert-area" class="certificate-container p-20 max-w-4xl mx-auto aspect-[4/3] flex flex-col justify-between shadow-3xl rounded-lg">
+        <div id="content-sertifikat" class="content-section hidden space-y-12 animate-fadeInUp">
+          <div id="cert-area" class="certificate-container p-20 max-w-4xl mx-auto aspect-[4/3] flex flex-col justify-between text-center relative shadow-3xl rounded-lg">
             <div class="certificate-border"></div>
             <div class="relative z-10">
-              <img src="https://i.ibb.co.com/R40DcxQR/Gemini-Generated-Image-2dt1jc2dt1jc2dt1.png" class="w-24 mx-auto mb-10 opacity-30 rounded-full">
+              <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 mx-auto mb-10 opacity-30">
               <h2 class="font-certificate text-5xl text-amber-900 font-bold mb-10 italic uppercase">Sertifikat Kelulusan</h2>
+              <p class="text-slate-500 text-sm font-medium italic mb-2 uppercase">Diberikan dengan rasa syukur kepada:</p>
               <h3 id="cert-nama" class="font-certificate text-5xl font-bold text-emerald-950 my-10 border-b-4 border-amber-300 inline-block px-12 italic uppercase">-</h3>
-              <p id="cert-tingkat" class="text-emerald-800 font-black text-4xl my-6 uppercase">-</p>
+              <p class="text-slate-600 text-sm font-medium mt-10 tracking-[0.1em] uppercase">Telah dinyatakan lulus dan mencapai standar tingkat:</p>
+              <p id="cert-tingkat" class="text-emerald-800 font-black text-4xl my-6 uppercase tracking-[0.2em] italic">-</p>
             </div>
-            <div class="relative z-10">
-              <p class="text-slate-400 text-[10px] font-bold mb-20 uppercase tracking-[0.3em]">Pembina Thifan Badur Khan</p>
-              <span class="text-emerald-950 font-black uppercase text-base border-t-2 border-emerald-900 pt-2 px-10 italic">Ust. Ali Yahya, B.A.</span>
+            <div class="relative z-10 flex justify-center mt-12 text-center">
+              <div>
+                <p class="text-slate-400 text-[10px] font-bold mb-20 uppercase tracking-[0.3em]">Pembina Thifan Badur Khan</p>
+                <div class="border-b-2 border-emerald-900 w-72 mx-auto mb-2"></div>
+                <span class="text-emerald-950 font-black uppercase text-base tracking-widest uppercase italic font-black">Ust. Ali Yahya, B.A.</span>
+              </div>
             </div>
           </div>
-          <button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-[2rem] shadow-2xl transition-all uppercase tracking-widest text-xs hover:bg-black italic italic">📥 Download PDF</button>
+          <button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-[2rem] shadow-2xl transition-all uppercase tracking-[0.2em] text-xs hover:bg-black active:scale-95 italic">📥 Download Sertifikat (PDF)</button>
         </div>
 
-        <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8 text-center">
-          <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border">
-            <h3 class="text-2xl font-black text-emerald-950 mb-10 italic uppercase">Kurikulum Pelatihan</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic">
+        <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8">
+          <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border text-center uppercase">
+            <h3 class="text-2xl font-black text-emerald-950 mb-10 italic">Program Pelatihan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic uppercase">
               <div class="bg-emerald-50 p-10 rounded-[2.5rem] border border-emerald-100">
-                <h4 class="font-black text-emerald-800 mb-4 uppercase tracking-widest italic font-black uppercase tracking-widest italic">📅 Tahunan</h4>
-                <ul class="space-y-3 font-medium text-emerald-900/70 italic uppercase">
-                   <li>• UKT (Ujian Kenaikan Tingkat)</li>
-                   <li>• Pertandingan Antar Cabang</li>
-                </ul>
+                <h4 class="font-black text-emerald-800 mb-4 uppercase tracking-widest">📅 Tahunan</h4>
+                <ul class="space-y-2"><li>• Ujian Kenaikan Tingkat (UKT)</li><li>• Pertandingan Antar Caban</li></ul>
               </div>
-              <div class="bg-amber-50 p-10 rounded-[2.5rem] border border-amber-100 italic">
-                <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest italic font-black uppercase tracking-widest italic">🌓 Semesteran</h4>
-                <ul class="space-y-3 font-medium text-amber-900/70 italic uppercase">
-                   <li>• Uji Kompetensi Teknik</li>
-                   <li>• Fun Match & Silaturahmi</li>
-                </ul>
+              <div class="bg-amber-50 p-10 rounded-[2.5rem] border border-amber-100">
+                <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest">🌓 Semesteran</h4>
+                <ul class="space-y-2"><li>• Uji Kompetensi Teknik</li><li>• Fun Match & Silaturahmi</li></ul>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="content-dokumentasi" class="content-section hidden">
+           <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border border-slate-100 text-center uppercase">
+             <h3 class="text-2xl font-black mb-10 uppercase">Galeri Aktivitas</h3>
+             <div id="dynamic-docs" class="mb-12"><p class="py-20 bg-slate-50 rounded-[3rem] border-4 border-dashed text-slate-400 font-bold italic">Menunggu update data Pelatih...</p></div>
+           </div>
+        </div>
+
+        <div id="content-iuran" class="content-section hidden">
+          <div class="bg-white p-16 rounded-[4rem] shadow-sm border border-slate-100 text-center uppercase">
+            <h3 class="text-3xl font-black text-emerald-950 mb-12 italic tracking-widest">Administrasi Keuangan</h3>
+            <div class="max-w-md mx-auto p-12 bg-emerald-50 rounded-[3.5rem] border border-emerald-100 shadow-inner">
+              <p id="display-iuran" class="text-6xl font-black text-emerald-900 italic tracking-tighter uppercase">-</p>
             </div>
           </div>
         </div>
@@ -334,8 +343,8 @@
       const dynDocs = document.getElementById('dynamic-docs');
       if (dynDocs && (d.foto_lat || d.video_lat)) {
         dynDocs.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-          ${d.foto_lat ? `<div class="text-center"><p class="text-[10px] font-black text-emerald-600 uppercase mb-4 tracking-widest">Snapshot Terakhir</p><div class="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white aspect-video"><img src="${d.foto_lat}" class="w-full h-full object-cover"></div></div>` : ''}
-          ${d.video_lat ? `<div class="text-center"><p class="text-[10px] font-black text-amber-600 uppercase mb-4 tracking-widest">Update Video</p><div class="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white bg-black aspect-video"><video controls class="w-full h-full"><source src="${d.video_lat}" type="video/mp4"></video></div></div>` : ''}
+          ${d.foto_lat ? `<div class="text-center"><p class="text-[10px] font-black text-emerald-600 uppercase mb-4 tracking-widest uppercase tracking-widest">Update Foto</p><div class="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white aspect-video"><img src="${d.foto_lat}" class="w-full h-full object-cover"></div></div>` : ''}
+          ${d.video_lat ? `<div class="text-center"><p class="text-[10px] font-black text-amber-600 uppercase mb-4 tracking-widest uppercase tracking-widest">Update Video</p><div class="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white bg-black aspect-video"><video controls class="w-full h-full"><source src="${d.video_lat}" type="video/mp4"></video></div></div>` : ''}
         </div>`;
       }
     }
