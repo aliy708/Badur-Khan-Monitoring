@@ -19,11 +19,11 @@
     @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
     .animate-float-slow { animation: floatSlow 5s ease-in-out infinite; }
 
-    #sidebar { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 260px; }
-    @media (max-width: 1024px) { #sidebar { left: -260px; } #sidebar.active { left: 0; } }
+    #sidebar { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 280px; }
+    @media (max-width: 1024px) { #sidebar { left: -280px; } #sidebar.active { left: 0; } }
     
     /* Menu Style SikaMad */
-    .nav-btn { display: flex; align-items: center; gap: 12px; padding: 12px 20px; width: 100%; border-radius: 0; transition: all 0.2s; color: #94a3b8; border-left: 4px solid transparent; font-size: 0.875rem; font-weight: 600; }
+    .nav-btn { display: flex; align-items: center; gap: 12px; padding: 14px 24px; width: 100%; border-radius: 0; transition: all 0.2s; color: #94a3b8; border-left: 4px solid transparent; font-size: 0.875rem; font-weight: 600; }
     .nav-btn:hover { background: #334155; color: white; }
     .nav-btn.active { background: #0f172a; color: #2dd4bf; border-left-color: #2dd4bf; }
     
@@ -37,8 +37,8 @@
 
     <div id="login-page" class="min-h-screen flex items-center justify-center p-6 bg-[#0f172a]">
       <div class="w-full max-w-md text-center animate-fadeInUp">
-        <div class="mb-10 animate-float-slow">
-            <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-48 h-48 mx-auto object-contain">
+        <div class="mb-12 animate-float-slow">
+            <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-64 h-64 mx-auto object-contain">
         </div>
         <div class="bg-white p-10 rounded-3xl shadow-2xl relative overflow-hidden">
           <div class="absolute top-0 left-0 w-full h-1.5 bg-teal-500"></div>
@@ -48,19 +48,19 @@
             <input type="text" id="niath-input" placeholder="MASUKKAN NIATH" class="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:border-teal-500 outline-none uppercase font-bold text-center transition-all">
             <button type="submit" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-xl shadow-lg uppercase transition-all tracking-wider text-sm">Masuk Portal</button>
           </form>
-          <p id="error-msg" class="text-red-500 text-xs font-bold mt-5 hidden bg-red-50 p-3 rounded-lg">NIATH tidak terdaftar!</p>
+          <p id="error-msg" class="text-red-500 text-xs font-bold mt-5 hidden bg-red-50 p-3 rounded-xl">NIATH tidak terdaftar!</p>
         </div>
       </div>
     </div>
 
-    <div id="dashboard-page" class="hidden flex h-screen overflow-hidden">
+    <div id="dashboard-page" class="hidden min-h-screen flex h-screen overflow-hidden">
       
       <aside id="sidebar" class="fixed lg:relative h-full bg-[#1e293b] flex flex-col z-50 shadow-2xl">
-        <div class="p-6 flex items-center gap-3 border-b border-slate-700/50">
-          <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-10 h-10 object-contain">
-          <div>
-            <h2 class="text-white font-bold text-sm uppercase leading-none italic">Badur Khan</h2>
-            <p class="text-teal-400 text-[9px] font-bold tracking-widest mt-1 uppercase">Portal Monitoring</p>
+        <div class="p-8 flex flex-col items-center gap-4 border-b border-slate-700/50">
+          <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-32 h-32 object-contain">
+          <div class="text-center">
+            <h2 class="text-white font-bold text-base uppercase leading-none italic">Badur Khan</h2>
+            <p class="text-teal-400 text-[10px] font-bold tracking-widest mt-2 uppercase">Portal Monitoring</p>
           </div>
         </div>
         
@@ -115,20 +115,20 @@
                   <p class="text-5xl font-black text-slate-800 tracking-tighter uppercase" id="display-nama">-</p>
                   <p class="inline-block px-3 py-1 bg-teal-50 text-teal-600 font-black rounded-lg mt-4 text-[10px] uppercase tracking-widest" id="display-niath">NIATH: -</p>
                 </div>
-                <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-32 opacity-10 absolute -right-6 -bottom-6 grayscale">
+                <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-56 h-56 opacity-10 absolute -right-8 -bottom-8 grayscale">
               </div>
 
               <div class="grid grid-cols-1 gap-4">
                 <div class="bg-white p-5 rounded-2xl border-l-8 border-teal-600 card-shadow flex justify-between items-center">
-                   <p class="text-xs font-black text-slate-400 uppercase tracking-wider uppercase">Hadir</p>
+                   <p class="text-xs font-black text-slate-400 uppercase tracking-wider">Hadir</p>
                    <p id="stat-hadir" class="text-3xl font-black text-teal-600">0</p>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border-l-8 border-amber-500 card-shadow flex justify-between items-center">
-                   <p class="text-xs font-black text-slate-400 uppercase tracking-wider uppercase">Sakit</p>
+                   <p class="text-xs font-black text-slate-400 uppercase tracking-wider">Sakit</p>
                    <p id="stat-sakit" class="text-3xl font-black text-amber-500">0</p>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border-l-8 border-rose-600 card-shadow flex justify-between items-center">
-                   <p class="text-xs font-black text-slate-400 uppercase tracking-wider uppercase">Alpa</p>
+                   <p class="text-xs font-black text-slate-400 uppercase tracking-wider">Alpa</p>
                    <p id="stat-alpa" class="text-3xl font-black text-rose-600">0</p>
                 </div>
               </div>
@@ -140,34 +140,34 @@
                 Sejarah Thifan Po Khan
               </h3>
               <div class="text-slate-600 text-sm leading-relaxed space-y-5 text-justify italic">
-                [cite_start]<p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki[cite: 105]. [cite_start]Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam[cite: 105].</p>
-                [cite_start]<p>Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah[cite: 108].</p>
+                <p>Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam.</p>
+                <p>Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah.</p>
               </div>
             </div>
           </div>
 
-          <div id="content-struktur" class="content-section hidden animate-fadeInUp uppercase">
+          <div id="content-struktur" class="content-section hidden animate-fadeInUp">
             <div class="bg-white p-10 rounded-3xl card-shadow border text-center overflow-x-auto">
               <h3 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest">Struktur Kepengurusan Badur Khan</h3>
               <div class="flex flex-col items-center gap-8 min-w-[600px] py-4">
                 <div class="org-box bg-slate-800 !text-white min-w-[240px]">
-                  <p class="text-[8px] uppercase font-black opacity-50 mb-1 tracking-widest">Pembina Utama</p>
-                  <p class="font-black text-sm">Ust. Ali Yahya, B.A.</p>
+                  <p class="text-[8px] uppercase font-black opacity-50 mb-1 tracking-widest uppercase">Pembina Utama</p>
+                  <p class="font-black text-sm uppercase">Ust. Ali Yahya, B.A.</p>
                 </div>
                 <div class="flex gap-8 uppercase italic">
-                  <div class="org-box bg-teal-600 !text-white uppercase italic"> <p class="text-[8px] opacity-60">Ketua</p> [cite_start]M. Nikhat Al-Badruni [cite: 117] </div>
-                  <div class="org-box bg-teal-600 !text-white uppercase italic"> <p class="text-[8px] opacity-60">Wakil Ketua</p> [cite_start]Ahmad Jariir [cite: 117] </div>
+                  <div class="org-box bg-teal-600 !text-white uppercase italic"> <p class="text-[8px] opacity-60">Ketua</p> M. Nikhat Al-Badruni </div>
+                  <div class="org-box bg-teal-600 !text-white uppercase italic"> <p class="text-[8px] opacity-60">Wakil Ketua</p> Ahmad Jariir </div>
                 </div>
                 <div class="flex gap-4">
                   <div class="org-box text-xs uppercase italic font-bold">Sekretaris: Shalahuddin M.A & Fahri R.F</div>
                   <div class="org-box text-xs uppercase italic font-bold">Bendahara: Akio R.R & Agha S.A</div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full text-[10px] font-bold uppercase italic">
-                  <div class="org-box bg-slate-50 uppercase italic font-bold">Humas: M. Fauzan & Nabil H.</div>
-                  <div class="org-box bg-slate-50 uppercase italic font-bold">Korlap: Narotama & Shafwan</div>
-                  <div class="org-box bg-slate-50 uppercase italic font-bold">Kesehatan: Hibrizi Asyura</div>
-                  <div class="org-box bg-slate-50 uppercase italic font-bold uppercase italic font-bold">Konsumsi: M Azfar Azka</div>
-                  <div class="org-box bg-slate-50 uppercase italic font-bold uppercase italic font-bold">Inventaris: Tansri Ubaidillah</div>
+                  <div class="org-box bg-slate-50">Humas: M. Fauzan & Nabil H.</div>
+                  <div class="org-box bg-slate-50">Korlap: Narotama & Shafwan</div>
+                  <div class="org-box bg-slate-50">Kesehatan: Hibrizi Asyura</div>
+                  <div class="org-box bg-slate-50">Konsumsi: M Azfar Azka</div>
+                  <div class="org-box bg-slate-50">Inventaris: Tansri Ubaidillah</div>
                 </div>
               </div>
             </div>
@@ -182,7 +182,7 @@
                 <div class="flex justify-between p-5 bg-slate-50 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Kelas</span><span id="bio-kelas" class="font-black text-slate-700 text-right">-</span></div>
                 <div class="flex justify-between p-5 bg-white border border-slate-100 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Sabuk</span><span id="bio-tingkat" class="font-black text-teal-600 text-right">-</span></div>
                 <div class="p-8 bg-slate-800 rounded-2xl mt-8 text-white text-center shadow-lg">
-                  <p class="text-[10px] uppercase font-black text-teal-400 mb-2 tracking-widest uppercase italic font-black">Alamat Terdaftar</p>
+                  <p class="text-[10px] uppercase font-black text-teal-400 mb-2 tracking-widest uppercase italic">Alamat Terdaftar</p>
                   <p id="bio-alamat" class="text-sm font-medium uppercase">-</p>
                 </div>
               </div>
@@ -191,17 +191,17 @@
 
           <div id="content-iuran" class="content-section hidden animate-fadeInUp text-center">
             <div class="bg-white p-16 rounded-3xl card-shadow border border-slate-200">
-              <h3 class="text-2xl font-black text-slate-800 mb-12 italic uppercase font-black">Status Administrasi</h3>
+              <h3 class="text-2xl font-black text-slate-800 mb-12 uppercase italic font-black">Status Administrasi</h3>
               <div class="max-w-md mx-auto p-12 bg-teal-50 rounded-3xl border border-teal-100 shadow-inner">
-                <p class="text-xs text-teal-600 font-bold uppercase mb-4 tracking-widest uppercase italic font-black">Iuran Bulanan</p>
-                <p id="display-iuran" class="text-6xl font-black text-teal-800 tracking-tighter italic uppercase font-black uppercase">-</p>
+                <p class="text-xs text-teal-600 font-bold uppercase mb-4 tracking-widest italic">Iuran Bulanan</p>
+                <p id="display-iuran" class="text-6xl font-black text-teal-800 tracking-tighter italic uppercase">-</p>
               </div>
             </div>
           </div>
 
           <div id="content-dokumentasi" class="content-section hidden animate-fadeInUp text-center">
             <div class="bg-white p-12 rounded-3xl card-shadow border border-slate-200">
-              <h3 class="text-xl font-black text-slate-800 mb-12 uppercase tracking-tighter uppercase uppercase italic font-black uppercase">Galeri Aktivitas Santri</h3>
+              <h3 class="text-xl font-black text-slate-800 mb-12 uppercase tracking-tighter italic font-black">Galeri Aktivitas Santri</h3>
               <div id="dynamic-docs">
                 <div class="text-center py-20 bg-slate-50 rounded-3xl border-4 border-dashed border-slate-200">
                   <p class="text-slate-400 text-xs italic font-bold">Media akan muncul setelah sinkronisasi data.</p>
@@ -213,29 +213,29 @@
           <div id="content-sertifikat" class="content-section hidden space-y-12 animate-fadeInUp text-center">
             <div id="cert-area" class="certificate-container p-16 max-w-4xl mx-auto aspect-[4/3] flex flex-col justify-between shadow-2xl rounded-lg overflow-hidden">
               <div class="relative z-10">
-                <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 mx-auto mb-10 opacity-30 rounded-full uppercase italic font-black">
-                [cite_start]<h2 class="font-certificate text-5xl text-amber-900 font-bold mb-10 italic uppercase italic uppercase font-black uppercase italic">Sertifikat Kelulusan [cite: 40, 122]</h2>
-                <h3 id="cert-nama" class="font-certificate text-5xl font-bold text-slate-900 my-10 border-b-4 border-amber-300 inline-block px-12 italic uppercase font-black uppercase italic">-</h3>
-                <p id="cert-tingkat" class="text-teal-700 font-black text-4xl my-6 uppercase italic font-black uppercase italic tracking-[0.2em]">-</p>
+                <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 mx-auto mb-10 opacity-30 rounded-full">
+                <h2 class="font-certificate text-5xl text-amber-900 font-bold mb-10 italic uppercase font-black">Sertifikat Kelulusan</h2>
+                <h3 id="cert-nama" class="font-certificate text-5xl font-bold text-slate-900 my-10 border-b-4 border-amber-300 inline-block px-12 italic uppercase font-black">-</h3>
+                <p id="cert-tingkat" class="text-teal-700 font-black text-4xl my-6 uppercase italic tracking-[0.2em]">-</p>
               </div>
               <div class="relative z-10 text-center">
-                [cite_start]<p class="text-slate-400 text-[10px] font-bold mb-20 uppercase italic font-black uppercase italic">Pembina Thifan Badur Khan [cite: 42, 123]</p>
-                <span class="text-slate-800 font-black uppercase text-base border-t-2 border-slate-800 pt-2 px-10 italic uppercase font-black uppercase italic">Ust. [cite_start]Ali Yahya, B.A. [cite: 43, 124]</span>
+                <p class="text-slate-400 text-[10px] font-bold mb-20 uppercase italic font-black">Pembina Thifan Badur Khan</p>
+                <span class="text-slate-800 font-black uppercase text-base border-t-2 border-slate-800 pt-2 px-10 italic font-black">Ust. Ali Yahya, B.A.</span>
               </div>
             </div>
-            [cite_start]<button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-2xl shadow-lg uppercase text-xs hover:bg-black italic italic uppercase font-black uppercase italic">📥 Unduh PDF [cite: 43, 124]</button>
+            <button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-2xl shadow-lg uppercase text-xs hover:bg-black italic font-black">📥 Unduh PDF</button>
           </div>
 
-          <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8 text-center uppercase italic font-black">
+          <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8 text-center">
             <div class="bg-white p-12 rounded-[3.5rem] shadow-sm border">
-              [cite_start]<h3 class="text-2xl font-black text-emerald-950 mb-10 italic uppercase font-black uppercase italic tracking-widest uppercase">Target & Kurikulum Pendidikan [cite: 108]</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic uppercase font-black uppercase italic uppercase font-black uppercase italic">
-                <div class="bg-teal-50 p-10 rounded-3xl border border-teal-100 italic uppercase font-black uppercase italic uppercase font-black uppercase italic">
-                  [cite_start]<h4 class="font-black text-teal-800 mb-4 uppercase tracking-widest italic uppercase font-black uppercase italic uppercase font-black uppercase italic">📅 Program Tahunan [cite: 45, 109]</h4>
+              <h3 class="text-2xl font-black text-teal-800 mb-10 italic uppercase font-black tracking-widest uppercase">Kurikulum Pendidikan</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic font-black">
+                <div class="bg-teal-50 p-10 rounded-3xl border border-teal-100 italic">
+                  <h4 class="font-black text-teal-800 mb-4 uppercase tracking-widest italic font-black">📅 Program Tahunan</h4>
                   <ul class="space-y-3 font-medium text-teal-900/70 uppercase"><li>• Ujian Kenaikan Tingkat (UKT)</li><li>• Pertandingan Antar Cabang</li></ul>
                 </div>
-                <div class="bg-amber-50 p-10 rounded-3xl border border-amber-100 italic uppercase font-black uppercase italic uppercase font-black uppercase italic">
-                  [cite_start]<h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest italic uppercase font-black uppercase italic uppercase font-black uppercase italic">🌓 Program Semesteran [cite: 46, 110]</h4>
+                <div class="bg-amber-50 p-10 rounded-3xl border border-amber-100 italic font-black">
+                  <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest italic font-black">🌓 Program Semesteran</h4>
                   <ul class="space-y-3 font-medium text-amber-900/70 uppercase"><li>• Uji Kompetensi Teknik</li><li>• Fun Match & Silaturahmi</li></ul>
                 </div>
               </div>
@@ -260,7 +260,7 @@
       const month = now.getMonth() + 1;
       const year = now.getFullYear();
       if(document.getElementById('academic-year')) document.getElementById('academic-year').innerText = (month >= 7) ? `${year}/${year + 1}` : `${year - 1}/${year}`;
-      if(document.getElementById('academic-semester')) document.getElementById('academic-semester').innerText = (month >= 7 && month <= 12) ? "Semester Ganjil" : "Semester Genap";
+      if(document.getElementById('academic-semester')) document.getElementById('academic-semester').innerText = (month >= 7 && month <= 12) ? "Ganjil" : "Genap";
     }
     setInterval(updateClock, 1000); updateClock();
 
@@ -278,10 +278,7 @@
         btn.classList.remove('active');
         if(btn.innerText.toLowerCase().includes(section)) btn.classList.add('active');
       });
-      if(window.innerWidth < 1024) {
-          const sb = document.getElementById('sidebar');
-          if(sb.classList.contains('active')) toggleSidebar();
-      }
+      if(window.innerWidth < 1024) toggleSidebar();
     }
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
@@ -334,8 +331,8 @@
       const dynDocs = document.getElementById('dynamic-docs');
       if (dynDocs && (d.foto_lat || d.video_lat)) {
         dynDocs.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          ${d.foto_lat ? `<div class="text-center"><p class="text-[10px] font-black text-teal-600 uppercase mb-3 tracking-widest uppercase italic font-black uppercase italic uppercase font-black uppercase italic uppercase font-black uppercase italic">Update Foto</p><div class="rounded-2xl overflow-hidden shadow-lg border-4 border-white aspect-video"><img src="${d.foto_lat}" class="w-full h-full object-cover"></div></div>` : ''}
-          ${d.video_lat ? `<div class="text-center"><p class="text-[10px] font-black text-teal-600 uppercase mb-3 tracking-widest uppercase italic font-black uppercase italic uppercase font-black uppercase italic uppercase font-black uppercase italic">Update Video</p><div class="rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-black aspect-video"><video controls class="w-full h-full"><source src="${d.video_lat}" type="video/mp4"></video></div></div>` : ''}
+          ${d.foto_lat ? `<div class="text-center"><p class="text-[10px] font-black text-teal-600 uppercase mb-3 tracking-widest">Update Foto</p><div class="rounded-2xl overflow-hidden shadow-lg border-4 border-white aspect-video"><img src="${d.foto_lat}" class="w-full h-full object-cover"></div></div>` : ''}
+          ${d.video_lat ? `<div class="text-center"><p class="text-[10px] font-black text-teal-600 uppercase mb-3 tracking-widest">Update Video</p><div class="rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-black aspect-video"><video controls class="w-full h-full"><source src="${d.video_lat}" type="video/mp4"></video></div></div>` : ''}
         </div>`;
       }
     }
