@@ -8,205 +8,291 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Poppins', sans-serif; }
         .font-arabic { font-family: 'Amiri', serif; }
+        .font-certificate { font-family: 'Playfair Display', serif; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .glassmorphism { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: white; z-index: 100; transition: 0.3s ease-out; }
+        @keyframes pulse-red { 0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 50% { box-shadow: 0 0 0 15px rgba(220, 38, 38, 0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pulse-red { animation: pulse-red 2s infinite; }
+        .glassmorphism { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: white; z-index: 100; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .sidebar.active { left: 0; }
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; display: none; }
         .sidebar-overlay.active { display: block; }
+        .certificate-container { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 8px solid #d4af37; padding: 2rem; position: relative; }
     </style>
 </head>
-<body class="h-full bg-emerald-50/30 overflow-auto">
-    <div id="app-container" class="w-full min-h-full">
-        <div id="notification-container" class="fixed top-0 inset-x-0 z-[200] max-w-md mx-auto"></div>
+<body class="h-full bg-slate-50 overflow-auto">
 
-        <div id="login-page" class="min-h-full flex flex-col items-center justify-center p-4">
-            <div class="w-full max-w-md text-center animate-fade-in">
-                <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" alt="Logo" class="w-32 h-32 mx-auto mb-6 object-contain">
-                <h1 class="text-3xl font-bold text-emerald-800 mb-2">Badur Khan</h1>
-                <p class="text-emerald-600 font-medium mb-8">Portal Monitoring Santri</p>
-                
-                <div class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
-                    <form id="login-form" class="space-y-6">
-                        <div class="text-left">
-                            <label class="block text-sm font-semibold text-gray-600 mb-2">NIATH (Nomor Induk)</label>
-                            <input type="text" id="niath-input" placeholder="Masukkan NIATH Anda" class="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-emerald-500 outline-none transition-all" required>
-                        </div>
-                        <button type="submit" id="login-btn" class="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-lg flex items-center justify-center gap-2 transition-all">
-                            <span>Masuk</span>
-                        </button>
-                    </form>
-                    <div id="loading-state" class="hidden mt-4 text-emerald-600 font-semibold animate-pulse">Memuat data dari server...</div>
-                </div>
-            </div>
-        </div>
+    <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-[60] w-16 h-16 bg-red-600 rounded-full flex items-center justify-center text-white shadow-2xl animate-pulse-red hover:scale-110 transition-transform">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
 
-        <div id="dashboard-page" class="hidden min-h-full">
-            <div id="sidebar-overlay" class="sidebar-overlay"></div>
-
-            <div id="sidebar" class="sidebar shadow-2xl overflow-y-auto">
-                <div class="p-6">
-                    <div class="flex flex-col items-center mb-8 pb-6 border-b border-gray-100">
-                        <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" alt="Logo" class="w-24 h-24 object-contain mb-2">
-                        <h2 class="font-bold text-emerald-800">BADUR KHAN</h2>
+    <div id="login-page" class="min-h-full flex flex-col items-center justify-center p-6 bg-emerald-900">
+        <div class="w-full max-w-md text-center animate-fade-in">
+            <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" class="w-32 h-32 mx-auto mb-6 animate-float">
+            <h1 class="text-white text-3xl font-bold mb-8">Badur Khan Portal</h1>
+            <div class="bg-white p-8 rounded-3xl shadow-2xl">
+                <form id="login-form" class="space-y-6">
+                    <div class="text-left">
+                        <label class="text-xs font-bold text-gray-400 uppercase">Masukkan NIATH</label>
+                        <input type="text" id="niath-input" placeholder="Contoh: BK2024001" class="w-full mt-2 p-4 bg-slate-50 rounded-xl border-2 border-slate-100 focus:border-emerald-500 outline-none transition-all">
                     </div>
-                    <nav class="space-y-2">
-                        <button class="menu-item w-full flex items-center gap-3 p-3 rounded-xl bg-emerald-50 text-emerald-700 font-bold" data-page="dashboard">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                            Dashboard
-                        </button>
-                        </nav>
-                </div>
-            </div>
-
-            <div class="p-4 md:p-8">
-                <header class="max-w-6xl mx-auto mb-8 sticky top-4 z-40">
-                    <div class="glassmorphism rounded-2xl p-4 shadow-lg border border-white">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <button id="menu-toggle-btn" class="p-2 bg-emerald-600 text-white rounded-lg">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                                </button>
-                                <div>
-                                    <h1 class="font-bold text-emerald-900 leading-none mb-1" id="dash-santri-name">Nama Santri</h1>
-                                    <div id="auto-academic-period" class="text-[10px] md:text-xs font-bold text-emerald-600 uppercase tracking-wider">
-                                        Memuat Periode...
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4">
-                                <div class="text-right hidden sm:block border-r pr-4 border-emerald-100">
-                                    <p id="header-time" class="text-lg font-bold text-emerald-800 leading-none">00:00</p>
-                                    <p id="header-date" class="text-[10px] text-gray-500 uppercase font-semibold">Tanggal</p>
-                                </div>
-                                <button id="logout-btn" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl font-bold text-xs uppercase hover:bg-red-600 hover:text-white transition-all shadow-sm">
-                                    Keluar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
-                <main class="max-w-6xl mx-auto space-y-6">
-                    <div class="grid grid-cols-3 gap-4 animate-fade-in">
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-emerald-500 text-center">
-                            <p class="text-[10px] font-bold text-gray-400 uppercase">Hadir</p>
-                            <p id="stat-hadir" class="text-2xl font-bold text-emerald-600">0</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-amber-500 text-center">
-                            <p class="text-[10px] font-bold text-gray-400 uppercase">Sakit</p>
-                            <p id="stat-sakit" class="text-2xl font-bold text-amber-600">0</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-red-500 text-center">
-                            <p class="text-[10px] font-bold text-gray-400 uppercase">Alpa</p>
-                            <p id="stat-alpa" class="text-2xl font-bold text-red-600">0</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-3xl shadow-lg border border-emerald-50">
-                        <h3 class="font-bold text-emerald-900 mb-4">Grafik Progres Skor Teknik</h3>
-                        <div class="h-[250px]"><canvas id="progressChart"></canvas></div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-3xl shadow-lg border border-emerald-50 overflow-hidden">
-                        <h3 class="font-bold text-emerald-900 mb-4">Status Iuran Bulanan</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left">
-                                <thead class="bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase">
-                                    <tr>
-                                        <th class="px-4 py-3">Periode</th>
-                                        <th class="px-4 py-3">Status</th>
-                                        <th class="px-4 py-3">Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="iuran-table-body" class="divide-y divide-gray-50">
-                                    </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </main>
+                    <button type="submit" class="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-all">Masuk Ke Dashboard</button>
+                </form>
+                <div id="loading-state" class="hidden mt-4 text-emerald-600 font-bold animate-pulse">Memuat data santri...</div>
             </div>
         </div>
     </div>
 
+    <div id="wa-group-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-8 text-center animate-fade-in">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            </div>
+            <h2 class="text-xl font-bold mb-2">Penting!</h2>
+            <p class="text-gray-500 text-sm mb-6">Agar tidak ketinggalan info latihan, silakan bergabung ke Grup WA Wali Santri.</p>
+            <a href="https://chat.whatsapp.com/invite/anda" class="block w-full py-4 bg-green-600 text-white rounded-xl font-bold mb-2">Gabung Grup Sekarang</a>
+            <button onclick="closeWaModal()" class="w-full py-3 text-gray-400 font-medium">Nanti Saja</button>
+        </div>
+    </div>
+
+    <div id="dashboard-page" class="hidden min-h-full">
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <aside id="sidebar" class="sidebar shadow-2xl">
+            <div class="p-6">
+                <div class="flex flex-col items-center mb-8 border-b pb-6">
+                    <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" class="w-24 h-24 mb-2">
+                    <h2 class="font-bold text-emerald-800 tracking-tighter">BADUR KHAN</h2>
+                </div>
+                <nav class="space-y-1">
+                    <button onclick="showSection('dashboard')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl bg-emerald-50 text-emerald-700 font-bold">Dashboard</button>
+                    <button onclick="showSection('biodata')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium">Biodata Santri</button>
+                    <button onclick="showSection('struktur')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium">Struktur Pengurus</button>
+                    <button onclick="showSection('program')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium">Target & Program</button>
+                    <button onclick="showSection('iuran-page')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium">Rincian Iuran</button>
+                    <button onclick="showSection('dokumentasi')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium">Dokumentasi</button>
+                    <button onclick="showSection('sertifikat')" class="menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium">Sertifikat</button>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="p-4 md:p-8">
+            <header class="max-w-6xl mx-auto mb-6 sticky top-4 z-40">
+                <div class="glassmorphism rounded-3xl p-4 shadow-xl border border-white">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <button onclick="toggleSidebar()" class="p-3 bg-emerald-600 text-white rounded-xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+                            <div>
+                                <h1 class="font-bold text-emerald-900 leading-none" id="dash-santri-name">Nama Santri</h1>
+                                <div id="auto-academic-period" class="text-[10px] md:text-xs font-bold text-emerald-600 uppercase mt-1">TA 2025/2026 | Semester Genap</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="text-right hidden sm:block">
+                                <p id="header-time" class="text-lg font-bold text-emerald-800 leading-none">00:00</p>
+                                <p id="header-date" class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Tanggal</p>
+                            </div>
+                            <button onclick="location.reload()" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl font-bold text-xs uppercase border border-red-100">Keluar</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main id="main-content" class="max-w-6xl mx-auto">
+                
+                <div id="section-dashboard" class="content-section space-y-6 animate-fade-in">
+                    <div id="announcement-box" class="hidden bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-2xl">
+                        <div class="flex gap-3">
+                            <span class="text-2xl">📢</span>
+                            <div>
+                                <p class="font-bold text-amber-800">Pengumuman Penting</p>
+                                <p id="announcement-text" class="text-amber-700 text-sm">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-white p-6 rounded-3xl shadow-sm text-center border-b-4 border-emerald-500">
+                            <p class="text-2xl font-bold text-emerald-600" id="stat-hadir">0</p>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase">Hadir</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm text-center border-b-4 border-amber-500">
+                            <p class="text-2xl font-bold text-amber-600" id="stat-sakit">0</p>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase">Sakit</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm text-center border-b-4 border-red-500">
+                            <p class="text-2xl font-bold text-red-600" id="stat-alpa">0</p>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase">Alpa</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
+                        <h3 class="font-bold text-emerald-900 mb-6 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            Grafik Perkembangan Teknik
+                        </h3>
+                        <div class="h-[300px]"><canvas id="progressChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div id="section-biodata" class="content-section hidden animate-fade-in">
+                    <div class="bg-white p-8 rounded-3xl shadow-lg space-y-6">
+                        <h2 class="text-2xl font-bold text-emerald-800">Biodata Lengkap</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-xs text-gray-400 font-bold uppercase">Nama Lengkap</p><p id="bio-nama" class="font-bold text-slate-700">-</p></div>
+                            <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-xs text-gray-400 font-bold uppercase">NIATH</p><p id="bio-niath" class="font-bold text-slate-700">-</p></div>
+                            <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-xs text-gray-400 font-bold uppercase">Tempat/Tgl Lahir</p><p id="bio-tgl" class="font-bold text-slate-700">-</p></div>
+                            <div class="p-4 bg-slate-50 rounded-2xl"><p class="text-xs text-gray-400 font-bold uppercase">Tingkat Sabuk</p><p id="bio-sabuk" class="font-bold text-emerald-600">-</p></div>
+                            <div class="p-4 bg-slate-50 rounded-2xl col-span-full"><p class="text-xs text-gray-400 font-bold uppercase">Alamat</p><p id="bio-alamat" class="font-bold text-slate-700">-</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-iuran-page" class="content-section hidden animate-fade-in">
+                    <div class="bg-white p-8 rounded-3xl shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-800 mb-6">Rincian Pembayaran</h2>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-emerald-50 text-emerald-700 font-bold uppercase text-[10px]">
+                                    <tr><th class="p-4">Periode</th><th class="p-4">Status</th><th class="p-4">Keterangan</th></tr>
+                                </thead>
+                                <tbody id="iuran-body" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-sertifikat" class="content-section hidden animate-fade-in text-center">
+                    <div id="cert-preview" class="certificate-container max-w-3xl mx-auto shadow-2xl mb-8">
+                        <div class="border-4 border-double border-[#d4af37] p-10 bg-white/90">
+                            <h1 class="font-certificate text-5xl text-[#d4af37] mb-2">SERTIFIKAT</h1>
+                            <p class="font-bold tracking-widest text-emerald-800 mb-10">BELADIRI THIFAN PO KHAN</p>
+                            <p class="text-gray-500 italic">Diberikan kepada:</p>
+                            <h2 id="cert-name" class="text-3xl font-bold border-b-2 border-slate-300 inline-block px-10 mb-6 font-certificate">Nama Santri</h2>
+                            <p class="text-gray-600 mb-10">Telah dinyatakan lulus dan kompeten pada tingkat <b id="cert-level" class="text-emerald-700">Sabuk Putih</b></p>
+                            <div class="flex justify-between items-end mt-20">
+                                <div class="text-center"><p class="text-xs border-t border-slate-300 pt-2 px-4">Kepala Pelatih</p></div>
+                                <div class="text-center"><p class="text-xs border-t border-slate-300 pt-2 px-4" id="cert-date">27 Jan 2026</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="downloadCert()" class="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-bold shadow-lg hover:bg-emerald-700">Download Sertifikat (PDF)</button>
+                </div>
+
+                <div id="section-struktur" class="content-section hidden animate-fade-in p-10 text-center text-gray-400">Halaman Struktur Pengurus sedang disiapkan.</div>
+                <div id="section-program" class="content-section hidden animate-fade-in p-10 text-center text-gray-400">Halaman Target & Program sedang disiapkan.</div>
+                <div id="section-dokumentasi" class="content-section hidden animate-fade-in p-10 text-center text-gray-400">Halaman Dokumentasi sedang disiapkan.</div>
+
+            </main>
+        </div>
+    </div>
+
     <script>
-        // --- 1. KONFIGURASI ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-4air1KnXzQeLXExD9xDleNY9nTDt9PNrTqxnWa-m9QeMQ_oVAXmKj1bFUT8NZRIJkw/exec';
+        // --- CONFIG ---
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3eMMirS56BAdSn9ZyxogvOPC8DCfHyHbRheCMLOHIRsFQVw0s62FmCCe-C6g9kJA_4Q/exec';
         let myChart = null;
 
-        // --- 2. LOGIKA WAKTU & PERIODE OTOMATIS ---
+        // --- CORE FUNCTIONS ---
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        }
+
+        function closeWaModal() { document.getElementById('wa-group-modal').classList.add('hidden'); }
+
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('section-' + id).classList.remove('hidden');
+            
+            // Highlight sidebar button
+            document.querySelectorAll('.menu-btn').forEach(b => b.className = "menu-btn w-full flex items-center gap-3 p-4 rounded-xl text-gray-600 hover:bg-slate-50 font-medium");
+            event.currentTarget.className = "menu-btn w-full flex items-center gap-3 p-4 rounded-xl bg-emerald-50 text-emerald-700 font-bold";
+            
+            toggleSidebar(); // Close sidebar on mobile
+        }
+
         function updateClockAndPeriod() {
             const now = new Date();
-            
-            // Jam & Tanggal
             document.getElementById('header-time').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
-            document.getElementById('header-date').textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
+            document.getElementById('header-date').textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' });
 
-            // Tahun Ajaran & Semester
             const month = now.getMonth();
             const year = now.getFullYear();
             const semester = month >= 6 ? "Ganjil" : "Genap";
             const academicYear = month >= 6 ? `${year}/${year + 1}` : `${year - 1}/${year}`;
-            
-            document.getElementById('auto-academic-period').innerHTML = 
-                `TA ${academicYear} <span class="mx-1 text-emerald-200">|</span> Semester ${semester}`;
+            document.getElementById('auto-academic-period').innerHTML = `TA ${academicYear} <span class="mx-1 opacity-20">|</span> Semester ${semester}`;
         }
         setInterval(updateClockAndPeriod, 1000);
-        updateClockAndPeriod();
 
-        // --- 3. FETCH DATA DARI GOOGLE SHEETS (JSONP) ---
-        async function fetchSantriData(niath) {
-            return new Promise((resolve, reject) => {
+        // --- FETCH DATA ---
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const niath = document.getElementById('niath-input').value.trim();
+            const loading = document.getElementById('loading-state');
+            if(!niath) return;
+
+            loading.classList.remove('hidden');
+
+            try {
                 const callbackName = 'jsonp_' + Date.now();
                 const script = document.createElement('script');
                 script.src = `${GOOGLE_SCRIPT_URL}?niath=${encodeURIComponent(niath)}&callback=${callbackName}`;
                 
                 window[callbackName] = (data) => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        populateDashboard(data);
+                        document.getElementById('login-page').classList.add('hidden');
+                        document.getElementById('dashboard-page').classList.remove('hidden');
+                        document.getElementById('wa-group-modal').classList.remove('hidden');
+                    }
                     delete window[callbackName];
                     document.head.removeChild(script);
-                    resolve(data);
                 };
-                script.onerror = () => reject('Gagal terhubung ke server');
                 document.head.appendChild(script);
-            });
-        }
+            } catch (err) { alert('Gagal memuat data!'); } 
+            finally { loading.classList.add('hidden'); }
+        });
 
-        // --- 4. DISPLAY DATA KE UI ---
-        function displaySantriData(santri) {
+        function populateDashboard(santri) {
+            // Stats & Bio
             document.getElementById('dash-santri-name').textContent = santri.nama;
             document.getElementById('stat-hadir').textContent = santri.kehadiran;
             document.getElementById('stat-sakit').textContent = santri.sakit;
             document.getElementById('stat-alpa').textContent = santri.alpa;
+            
+            document.getElementById('bio-nama').textContent = santri.nama;
+            document.getElementById('bio-niath').textContent = santri.niath;
+            document.getElementById('bio-tgl').textContent = santri.tanggal_lahir;
+            document.getElementById('bio-sabuk').textContent = santri.tingkat;
+            document.getElementById('bio-alamat').textContent = santri.alamat;
 
-            // Update Tabel Iuran
-            const tableBody = document.getElementById('iuran-table-body');
-            tableBody.innerHTML = '';
-            if (santri.rincian_iuran) {
-                santri.rincian_iuran.forEach(item => {
-                    const statusStyle = item.status === 'Lunas' 
-                        ? 'bg-emerald-100 text-emerald-700' 
-                        : 'bg-red-100 text-red-700';
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td class="px-4 py-4 font-semibold text-gray-700">${item.periode}</td>
-                            <td class="px-4 py-4"><span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${statusStyle}">${item.status}</span></td>
-                            <td class="px-4 py-4 text-gray-400 text-xs">${item.ket}</td>
-                        </tr>
-                    `;
-                });
+            // Announcement
+            if(santri.announcement) {
+                document.getElementById('announcement-box').classList.remove('hidden');
+                document.getElementById('announcement-text').textContent = santri.announcement;
             }
 
-            // Update Grafik
-            initOrUpdateChart(santri.grafik_skor || [0,0,0,0,0,0]);
-        }
+            // Iuran
+            const iuranBody = document.getElementById('iuran-body');
+            iuranBody.innerHTML = '';
+            santri.rincian_iuran.forEach(item => {
+                const color = item.status === 'Lunas' ? 'text-emerald-600 bg-emerald-50' : 'text-red-600 bg-red-50';
+                iuranBody.innerHTML += `<tr><td class="p-4 font-bold text-slate-700">${item.periode}</td><td class="p-4"><span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${color}">${item.status}</span></td><td class="p-4 text-gray-400 text-xs">${item.ket}</td></tr>`;
+            });
 
-        function initOrUpdateChart(dataSkor) {
+            // Sertifikat
+            document.getElementById('cert-name').textContent = santri.nama;
+            document.getElementById('cert-level').textContent = santri.tingkat;
+
+            // Chart
             const ctx = document.getElementById('progressChart').getContext('2d');
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
@@ -215,60 +301,27 @@
                     labels: ['Bulan 1', 'Bulan 2', 'Bulan 3', 'Bulan 4', 'Bulan 5', 'Bulan 6'],
                     datasets: [{
                         label: 'Skor Teknik (%)',
-                        data: dataSkor,
+                        data: santri.grafik_skor || [0,0,0,0,0,0],
                         borderColor: '#059669',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 4,
-                        pointRadius: 5
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        fill: true, tension: 0.4, borderWidth: 4
                     }]
                 },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, max: 100 } }
-                }
+                options: { responsive: true, maintainAspectRatio: false }
             });
         }
 
-        // --- 5. EVENT HANDLERS ---
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const niath = document.getElementById('niath-input').value.trim();
-            const loading = document.getElementById('loading-state');
-            
-            loading.classList.remove('hidden');
-            
-            try {
-                const data = await fetchSantriData(niath);
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    displaySantriData(data);
-                    document.getElementById('login-page').classList.add('hidden');
-                    document.getElementById('dashboard-page').classList.remove('hidden');
-                }
-            } catch (err) {
-                alert('Terjadi kesalahan jaringan atau URL Script salah.');
-            } finally {
-                loading.classList.add('hidden');
-            }
-        });
+        async function downloadCert() {
+            const cert = document.getElementById('cert-preview');
+            const canvas = await html2canvas(cert, { scale: 2 });
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('l', 'mm', 'a4');
+            pdf.addImage(imgData, 'PNG', 10, 10, 277, 190);
+            pdf.save('Sertifikat-Santri.pdf');
+        }
 
-        // Sidebar Toggle
-        document.getElementById('menu-toggle-btn').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.add('active');
-            document.getElementById('sidebar-overlay').classList.add('active');
-        });
-        document.getElementById('sidebar-overlay').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.remove('active');
-            document.getElementById('sidebar-overlay').classList.remove('active');
-        });
-
-        // Logout
-        document.getElementById('logout-btn').addEventListener('click', () => location.reload());
+        updateClockAndPeriod();
     </script>
 </body>
 </html>
