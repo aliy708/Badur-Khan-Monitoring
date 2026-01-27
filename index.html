@@ -7,40 +7,22 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <style>
     :root { --primary: #0d9488; --dark-sidebar: #0f172a; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; overflow: hidden; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; -webkit-font-smoothing: antialiased; }
     
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; }
     
     @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-    .animate-float-slow { animation: floatSlow 4s ease-in-out infinite; }
+    .animate-float-slow { animation: floatSlow 5s ease-in-out infinite; }
 
     /* --- SIDEBAR SYSTEM --- */
-    #sidebar { 
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 280px; 
-      position: fixed; 
-      height: 100%; 
-      left: 0; 
-      top: 0; 
-      z-index: 50; 
-    }
-    /* Keadaan saat sidebar disembunyikan */
+    #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 280px; position: fixed; height: 100%; left: 0; top: 0; z-index: 50; }
     .sidebar-hidden #sidebar { transform: translateX(-280px); }
-    
-    /* Area Konten Utama */
-    #main-wrapper { 
-      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-      margin-left: 280px; 
-      width: calc(100% - 280px);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    /* Keadaan saat konten melebar (sidebar sembunyi) */
+    #main-wrapper { transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 280px; width: calc(100% - 280px); min-height: 100vh; display: flex; flex-direction: column; }
     .sidebar-hidden #main-wrapper { margin-left: 0; width: 100%; }
 
     @media (max-width: 1024px) {
@@ -53,12 +35,20 @@
     .nav-btn:hover { background: #1e293b; color: white; }
     .nav-btn.active { background: #1e293b; color: #2dd4bf; border-left-color: #2dd4bf; }
     
+    /* Announcement Bar Styling */
+    .marquee-container { overflow: hidden; white-space: nowrap; position: relative; background: #f0fdfa; border: 1px solid #ccfbf1; padding: 10px 0; border-radius: 12px; }
+    .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; font-weight: 700; color: #0d9488; }
+    @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+    .marquee-urgent { background: #fef2f2; border-color: #fecaca; }
+    .marquee-urgent .marquee-text { color: #dc2626; }
+
     .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; }
     .org-box { background: white; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; min-width: 150px; }
-    .certificate-container { background: #fffcf0; border: 15px double #d4af37; position: relative; }
   </style>
 </head>
-<body class="h-full"> <div id="app-container" class="min-h-screen">
+<body class="h-full">
+
+  <div id="app-container" class="min-h-screen">
 
     <div id="login-page" class="min-h-screen flex items-center justify-center p-6 bg-[#0f172a]">
       <div class="w-full max-w-md text-center animate-fadeInUp">
@@ -67,55 +57,54 @@
         </div>
         <div class="bg-white p-10 rounded-3xl shadow-2xl relative overflow-hidden">
           <div class="absolute top-0 left-0 w-full h-1.5 bg-teal-500"></div>
-          <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase italic leading-none mb-2 italic">Badur Khan</h1>
-          <p class="text-slate-400 font-medium mb-8 text-[10px] uppercase tracking-widest leading-none italic uppercase">Portal Monitoring Santri</p>
+          <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase italic mb-2">Badur Khan</h1>
+          <p class="text-slate-400 font-medium mb-8 text-[10px] uppercase tracking-widest leading-none italic">Monitoring System Portal</p>
           <form id="login-form" class="space-y-4">
             <input type="text" id="niath-input" placeholder="MASUKKAN NIATH" class="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:border-teal-500 outline-none uppercase font-bold text-center transition-all">
             <button type="submit" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-xl shadow-lg uppercase transition-all tracking-wider text-sm">Masuk Portal</button>
           </form>
-          <p id="error-msg" class="text-red-500 text-xs font-bold mt-5 hidden bg-red-50 p-3 rounded-xl uppercase">NIATH tidak terdaftar!</p>
+          <p id="error-msg" class="text-red-500 text-xs font-bold mt-5 hidden bg-red-50 p-3 rounded-xl">NIATH tidak terdaftar!</p>
         </div>
       </div>
     </div>
 
     <div id="dashboard-page" class="hidden flex h-screen overflow-hidden">
-      
       <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[45] hidden" onclick="toggleSidebar()"></div>
       
       <aside id="sidebar" class="bg-[#0f172a] flex flex-col shadow-2xl overflow-hidden shrink-0">
-        <div class="p-8 flex flex-col items-center gap-4 border-b border-slate-800/50">
+        <div class="p-8 flex flex-col items-center gap-4 border-b border-slate-800/50 text-center">
           <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 h-24 object-contain">
-          <div class="text-center">
-            <h2 class="text-white font-bold text-base uppercase leading-none italic uppercase">Badur Khan</h2>
-            <p class="text-teal-400 text-[10px] font-bold tracking-widest mt-2 uppercase italic uppercase">Portal Monitoring</p>
+          <div>
+            <h2 class="text-white font-bold text-base uppercase leading-none italic">Badur Khan</h2>
+            <p class="text-teal-400 text-[10px] font-bold tracking-widest mt-2 uppercase italic">Portal Monitoring</p>
           </div>
         </div>
         
-        <div class="flex-1 overflow-y-auto pt-4 italic uppercase">
+        <div class="flex-1 overflow-y-auto pt-4 italic uppercase font-bold">
           <nav>
             <button onclick="navTo('dashboard')" class="nav-btn active"><span>🏠</span> Dashboard Utama</button>
-            <button onclick="navTo('biodata')" class="nav-btn"><span>👤</span> Data Santri</button> <button onclick="navTo('struktur')" class="nav-btn"><span>👨‍👩‍👧‍👦</span> Struktur Pengurus</button>
+            <button onclick="navTo('biodata')" class="nav-btn"><span>👤</span> Data Santri</button>
+            <button onclick="navTo('struktur')" class="nav-btn"><span>👨‍👩‍👧‍👦</span> Struktur Pengurus</button>
             <button onclick="navTo('program')" class="nav-btn"><span>🎯</span> Target & Program</button>
             <button onclick="navTo('dokumentasi')" class="nav-btn"><span>📸</span> Dokumentasi</button>
             <button onclick="navTo('iuran')" class="nav-btn"><span>💰</span> Administrasi Iuran</button>
             <button onclick="navTo('sertifikat')" class="nav-btn"><span>📜</span> Sertifikat Digital</button>
           </nav>
         </div>
-        <button onclick="location.reload()" class="p-6 bg-red-600/10 text-red-500 font-bold text-xs uppercase hover:bg-red-600 hover:text-white transition-all text-center italic uppercase">Keluar Portal</button>
+        <button onclick="location.reload()" class="p-6 bg-red-600/10 text-red-500 font-bold text-xs uppercase hover:bg-red-600 hover:text-white transition-all text-center italic uppercase">Logout Portal</button>
       </aside>
 
       <div id="main-wrapper">
-        
         <header class="h-16 bg-white border-b flex items-center justify-between px-6 shrink-0 shadow-sm z-40">
           <div class="flex items-center gap-4">
             <button onclick="toggleSidebar()" class="text-slate-500 text-2xl font-bold hover:text-teal-600 transition-colors p-2 focus:outline-none">☰</button>
-            <span class="hidden sm:block text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Management Console</span>
+            <span class="hidden sm:block text-[10px] font-black uppercase tracking-widest text-slate-400 italic font-black">Management Dashboard</span>
           </div>
           <div class="flex flex-col text-center">
             <p id="header-clock" class="text-xl font-black text-slate-800 tabular-nums leading-none">00:00:00</p>
             <p id="header-date" class="text-[9px] font-bold text-slate-400 uppercase mt-1"></p>
           </div>
-          <div class="hidden md:flex flex-col text-right italic uppercase">
+          <div class="hidden md:flex flex-col text-right italic uppercase font-black">
             <p id="academic-year" class="text-xs font-bold text-slate-800 leading-none"></p>
             <p id="academic-semester" class="text-[9px] font-bold text-teal-600 uppercase mt-1"></p>
           </div>
@@ -125,15 +114,17 @@
           
           <div id="content-dashboard" class="content-section space-y-8 animate-fadeInUp">
             
-            <div id="announcement-bar" class="hidden p-6 rounded-2xl shadow-sm border-l-[8px] flex items-center gap-5">
-              <div id="ann-icon" class="text-2xl">🔔</div>
-              <div><p id="ann-label" class="text-[10px] font-black uppercase opacity-60 mb-0.5 tracking-widest"></p><p id="display-announcement" class="text-sm font-bold"></p></div>
+            <div id="announcement-bar" class="hidden card-shadow bg-white p-2 rounded-2xl flex items-center gap-4">
+              <div class="bg-teal-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase italic shrink-0">Info Terbaru</div>
+              <div id="marquee-box" class="marquee-container flex-1">
+                <span id="display-announcement" class="marquee-text"></span>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div class="lg:col-span-2 bg-white p-8 rounded-3xl card-shadow border border-slate-200 flex items-center justify-between relative overflow-hidden">
                 <div class="relative z-10">
-                  <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 italic">Monitoring Ahlan wa Sahlan,</h3>
+                  <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 italic">Selamat Datang,</h3>
                   <p class="text-5xl font-black text-slate-800 tracking-tighter uppercase leading-tight italic" id="display-nama">-</p>
                   <p class="inline-block px-3 py-1 bg-teal-50 text-teal-600 font-black rounded-lg mt-4 text-[10px] uppercase" id="display-niath">NIATH: -</p>
                 </div>
@@ -142,19 +133,29 @@
 
               <div class="grid grid-cols-1 gap-4 italic uppercase font-black">
                 <div class="bg-teal-600 p-5 rounded-2xl text-white shadow-lg flex justify-between items-center transition-transform hover:scale-105">
-                   <p class="text-xs font-black uppercase tracking-wider italic uppercase">Hadir</p><p id="stat-hadir" class="text-3xl font-black">0</p>
+                   <p class="text-xs font-black uppercase tracking-wider italic">Hadir</p><p id="stat-hadir" class="text-3xl font-black">0</p>
                 </div>
                 <div class="bg-amber-500 p-5 rounded-2xl text-white shadow-lg flex justify-between items-center transition-transform hover:scale-105">
-                   <p class="text-xs font-black uppercase tracking-wider italic uppercase">Sakit</p><p id="stat-sakit" class="text-3xl font-black">0</p>
+                   <p class="text-xs font-black uppercase tracking-wider italic">Sakit</p><p id="stat-sakit" class="text-3xl font-black">0</p>
                 </div>
                 <div class="bg-rose-600 p-5 rounded-2xl text-white shadow-lg flex justify-between items-center transition-transform hover:scale-105">
-                   <p class="text-xs font-black uppercase tracking-wider italic uppercase">Alpa</p><p id="stat-alpa" class="text-3xl font-black">0</p>
+                   <p class="text-xs font-black uppercase tracking-wider italic">Alpa</p><p id="stat-alpa" class="text-3xl font-black">0</p>
                 </div>
               </div>
             </div>
 
+            <div class="bg-white p-8 rounded-3xl card-shadow border border-slate-200">
+              <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3 italic">
+                <span class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-700 rounded-xl text-lg">📊</span>
+                Statistik Kehadiran Mingguan
+              </h3>
+              <div class="relative h-[300px]">
+                <canvas id="attendanceChart"></canvas>
+              </div>
+            </div>
+
             <div class="bg-white p-10 rounded-3xl card-shadow italic text-justify italic">
-              <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3 italic"><span class="w-10 h-10 flex items-center justify-center bg-teal-100 text-teal-700 rounded-xl text-lg uppercase italic font-black">📜</span> Sejarah Thifan Po Khan</h3>
+              <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3 italic"><span class="w-10 h-10 flex items-center justify-center bg-teal-100 text-teal-700 rounded-xl text-lg uppercase font-black">📜</span> Sejarah Thifan Po Khan</h3>
               <p class="text-slate-600 text-sm leading-relaxed italic">Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki. Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam.</p>
               <p class="mt-4 text-slate-600 text-sm italic">Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah.</p>
             </div>
@@ -164,11 +165,11 @@
             <div class="bg-white p-10 rounded-3xl card-shadow overflow-x-auto">
               <h3 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest italic">Struktur Pengurus</h3>
               <div class="flex flex-col items-center gap-8 min-w-[600px] py-4">
-                <div class="org-box bg-slate-800 !text-white min-w-[240px] italic uppercase font-black"><p class="text-[8px] opacity-50 mb-1 italic uppercase font-black">Pembina Utama</p><p class="text-sm">Ust. Ali Yahya, B.A.</p></div>
-                <div class="flex gap-8 italic uppercase font-black"><div class="org-box bg-teal-600 !text-white"> Ketua: M. Nikhat Al-Badruni </div><div class="org-box bg-teal-600 !text-white"> Wakil: Ahmad Jariir </div></div>
-                <div class="flex gap-4 italic uppercase font-black text-xs"><div class="org-box bg-slate-50 italic font-bold">Sekretaris: Maulana & Fahri</div><div class="org-box bg-slate-50 italic font-bold">Bendahara: Akio & Agha</div></div>
+                <div class="org-box bg-slate-800 !text-white min-w-[240px] italic uppercase font-black"><p class="text-[8px] opacity-50 mb-1 uppercase font-black">Pembina Utama</p><p class="text-sm">Ust. Ali Yahya, B.A.</p></div>
+                <div class="flex gap-8 italic font-black uppercase"><div class="org-box bg-teal-600 !text-white"> Ketua: M. Nikhat Al-Badruni </div><div class="org-box bg-teal-600 !text-white"> Wakil: Ahmad Jariir </div></div>
+                <div class="flex gap-4 italic font-black uppercase text-xs"><div class="org-box bg-slate-50 italic font-bold">Sekretaris: Maulana & Fahri</div><div class="org-box bg-slate-50 italic font-bold">Bendahara: Akio & Agha</div></div>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full text-[10px] font-bold italic uppercase font-black">
-                  <div class="org-box italic">Humas: Fauzan & Nabil</div><div class="org-box italic">Korlap: Narotama & Shafwan</div><div class="org-box italic">Kesehatan: Hibrizi Asyura</div><div class="org-box italic">Konsumsi: M Azfar Azka</div><div class="org-box italic">Inventaris: Tansri Ubaidillah</div>
+                  <div class="org-box">Humas: Fauzan & Nabil</div><div class="org-box">Korlap: Narotama & Shafwan</div><div class="org-box">Kesehatan: Hibrizi Asyura</div><div class="org-box">Konsumsi: M Azfar Azka</div><div class="org-box">Inventaris: Tansri Ubaidillah</div>
                 </div>
               </div>
             </div>
@@ -176,28 +177,28 @@
 
           <div id="content-biodata" class="content-section hidden animate-fadeInUp uppercase font-black">
             <div class="bg-white p-10 rounded-3xl card-shadow max-w-2xl mx-auto">
-              <h3 class="text-xl font-black text-slate-800 mb-10 text-center uppercase tracking-widest italic uppercase font-black">Informasi Data Santri</h3>
+              <h3 class="text-xl font-black text-slate-800 mb-10 text-center uppercase tracking-widest italic font-black">Informasi Data Santri</h3>
               <div class="space-y-4 italic uppercase font-black">
                 <div class="flex justify-between p-5 bg-slate-50 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Nama</span><span id="bio-nama" class="font-black text-slate-800 text-right">-</span></div>
                 <div class="flex justify-between p-5 bg-white border border-slate-100 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Usia</span><span id="bio-umur" class="font-black text-slate-700 text-right">-</span></div>
                 <div class="flex justify-between p-5 bg-slate-50 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Kelas</span><span id="bio-kelas" class="font-black text-slate-700 text-right">-</span></div>
                 <div class="flex justify-between p-5 bg-white border border-slate-100 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Sabuk</span><span id="bio-tingkat" class="font-black text-teal-600 text-right">-</span></div>
-                <div class="p-8 bg-slate-900 rounded-2xl mt-8 text-white text-center shadow-lg uppercase italic font-black"><p id="bio-alamat" class="text-sm font-medium leading-relaxed">-</p></div>
+                <div class="p-8 bg-slate-800 rounded-2xl mt-8 text-white text-center shadow-lg uppercase italic font-black"><p id="bio-alamat" class="text-sm font-medium leading-relaxed">-</p></div>
               </div>
             </div>
           </div>
 
           <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8 uppercase italic font-black text-center italic uppercase font-black">
             <div class="bg-white p-12 rounded-3xl card-shadow">
-              <h3 class="text-2xl font-black text-teal-800 mb-10 italic uppercase font-black">Program Pelatihan</h3>
+              <h3 class="text-2xl font-black text-teal-800 mb-10 italic uppercase font-black tracking-widest">Program Pelatihan</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic uppercase font-black">
-                <div class="bg-teal-50 p-10 rounded-3xl border border-teal-100 italic uppercase font-black">
-                  <h4 class="font-black text-teal-800 mb-4 uppercase tracking-widest italic uppercase font-black">📅 Tahunan</h4>
-                  <ul class="space-y-3 font-medium text-teal-900/70 uppercase italic uppercase font-black"><li>• UKT (Ujian Kenaikan Tingkat)</li><li>• Pertandingan</li></ul>
+                <div class="bg-teal-50 p-10 rounded-3xl border border-teal-100 italic font-black uppercase">
+                  <h4 class="font-black text-teal-800 mb-4 uppercase tracking-widest italic font-black">📅 Program Tahunan</h4>
+                  <ul class="space-y-3 font-medium text-teal-900/70 uppercase"><li>• Ujian Kenaikan Tingkat (UKT)</li><li>• Pertandingan</li></ul>
                 </div>
-                <div class="bg-amber-50 p-10 rounded-3xl border border-amber-100 italic uppercase font-black">
-                  <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest italic uppercase font-black">🌓 Semesteran</h4>
-                  <ul class="space-y-3 font-medium text-amber-900/70 uppercase italic uppercase font-black"><li>• Uji Kompetensi Teknik</li><li>• Fun Match & Silaturahmi</li></ul>
+                <div class="bg-amber-50 p-10 rounded-3xl border border-amber-100 italic font-black uppercase">
+                  <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest italic font-black">🌓 Program Semesteran</h4>
+                  <ul class="space-y-3 font-medium text-amber-900/70 uppercase"><li>• Uji Kompetensi Teknik</li><li>• Fun Match & Silaturahmi</li></ul>
                 </div>
               </div>
             </div>
@@ -210,6 +211,7 @@
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9Xilh7v08WY11I9dH626HcXsxBPr3-ln_L4fdbNP-34p8ySuA8jO7B3xlW1ULpgmgrQ/exec';
+    let myChart = null; // Chart instance
 
     function updateClock() {
       const now = new Date();
@@ -217,37 +219,27 @@
       if(document.getElementById('current-day-login')) document.getElementById('current-day-login').innerText = now.toLocaleDateString('id-ID', { weekday: 'long' });
       if(document.getElementById('header-clock')) document.getElementById('header-clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
       if(document.getElementById('header-date')) document.getElementById('header-date').innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-      
       const month = now.getMonth() + 1;
       const year = now.getFullYear();
       if(document.getElementById('academic-year')) document.getElementById('academic-year').innerText = (month >= 7) ? `${year}/${year + 1}` : `${year - 1}/${year}`;
-      if(document.getElementById('academic-semester')) document.getElementById('academic-semester').innerText = (month >= 7 && month <= 12) ? "Ganjil" : "Genap";
+      if(document.getElementById('academic-semester')) document.getElementById('academic-semester').innerText = (month >= 7 && month <= 12) ? "Semester Ganjil" : "Semester Genap";
     }
     setInterval(updateClock, 1000); updateClock();
 
     function toggleSidebar() {
-      if(window.innerWidth > 1024) {
-        // Mode Desktop: Sembunyikan dengan dorong margin
-        document.body.classList.toggle('sidebar-hidden');
-      } else {
-        // Mode Mobile: Sembunyikan dengan geser (overlay)
-        document.body.classList.toggle('sidebar-active');
-        document.getElementById('sidebar-overlay').classList.toggle('hidden');
-      }
+      if(window.innerWidth > 1024) { document.body.classList.toggle('sidebar-hidden'); } 
+      else { document.body.classList.toggle('sidebar-active'); document.getElementById('sidebar-overlay').classList.toggle('hidden'); }
     }
 
     function navTo(section) {
       document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
       const target = document.getElementById(`content-${section}`);
       if(target) target.classList.remove('hidden');
-      
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
         if(btn.innerText.toLowerCase().includes(section)) btn.classList.add('active');
       });
-      if(window.innerWidth < 1024) {
-          if(document.body.classList.contains('sidebar-active')) toggleSidebar();
-      }
+      if(window.innerWidth < 1024 && document.body.classList.contains('sidebar-active')) toggleSidebar();
     }
 
     document.getElementById('login-form').addEventListener('submit', function(e) {
@@ -277,6 +269,54 @@
       document.getElementById('stat-alpa').innerText = d.alpa || 0;
       const bioData = {'bio-nama': d.nama, 'bio-umur': `${d.umur || '-'} Thn`, 'bio-kelas': d.kelas, 'bio-tingkat': d.tingkat, 'bio-alamat': d.alamat};
       for (const [id, val] of Object.entries(bioData)) { if(document.getElementById(id)) document.getElementById(id).innerText = val || "-"; }
+
+      // SMART ANNOUNCEMENT LOGIC
+      const annBar = document.getElementById('announcement-bar');
+      const marqueeBox = document.getElementById('marquee-box');
+      if (d.announcement && d.announcement.trim() !== "") {
+          let showMessage = true;
+          if (d.announcement_exp) {
+              const expDate = new Date(d.announcement_exp);
+              const today = new Date(); today.setHours(0,0,0,0);
+              if (today > expDate) showMessage = false;
+          }
+          if (showMessage) {
+              const isUrgent = d.announcement.trim().toUpperCase().startsWith("PENTING");
+              marqueeBox.className = isUrgent ? "marquee-container marquee-urgent" : "marquee-container";
+              document.getElementById('display-announcement').innerText = d.announcement;
+              annBar.classList.remove('hidden');
+          } else { annBar.classList.add('hidden'); }
+      } else { annBar.classList.add('hidden'); }
+
+      // INITIALIZE CHART.JS
+      initChart(d.kehadiran || 0, d.sakit || 0, d.alpa || 0);
+    }
+
+    function initChart(h, s, a) {
+        const ctx = document.getElementById('attendanceChart').getContext('2d');
+        if(myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Hadir', 'Sakit/Izin', 'Alpa'],
+                datasets: [{
+                    label: 'Total Record',
+                    data: [h, s, a],
+                    backgroundColor: ['#0d9488', '#f59e0b', '#e11d48'],
+                    borderRadius: 10,
+                    barThickness: 50
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
     }
   </script>
 </body>
