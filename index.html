@@ -1,331 +1,185 @@
 <!doctype html>
 <html lang="id" class="h-full">
-<head>
+ <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Badur Khan - Monitoring Beladiri Santri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root { --primary: #0d9488; --dark-sidebar: #0f172a; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; -webkit-font-smoothing: antialiased; }
-    
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; }
-    
-    @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-    .animate-float-slow { animation: floatSlow 4s ease-in-out infinite; }
-
-    /* Sidebar Layout Modern */
-    #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); width: 280px; position: fixed; height: 100%; left: 0; top: 0; z-index: 50; }
-    .sidebar-hidden #sidebar { transform: translateX(-280px); }
-    
-    #main-wrapper { transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 280px; width: calc(100% - 280px); min-height: 100vh; display: flex; flex-direction: column; }
-    .sidebar-hidden #main-wrapper { margin-left: 0; width: 100%; }
-
-    @media (max-width: 1024px) {
-      #main-wrapper { margin-left: 0; width: 100%; }
-      #sidebar { transform: translateX(-280px); }
-      .sidebar-active #sidebar { transform: translateX(0); }
-    }
-    
-    .nav-btn { display: flex; align-items: center; gap: 12px; padding: 14px 24px; width: 100%; transition: all 0.2s; color: #94a3b8; border-left: 4px solid transparent; font-size: 0.875rem; font-weight: 600; text-align: left; }
-    .nav-btn:hover { background: #1e293b; color: white; }
-    .nav-btn.active { background: #1e293b; color: #2dd4bf; border-left-color: #2dd4bf; }
-    
-    .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0; }
-    .org-box { background: white; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; min-width: 150px; }
-    .certificate-container { background: #fffcf0; border: 15px double #d4af37; position: relative; }
+    * { font-family: 'Poppins', sans-serif; }
+    .font-arabic { font-family: 'Amiri', serif; }
+    .font-certificate { font-family: 'Playfair Display', serif; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .glassmorphism { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); }
+    .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: white; z-index: 100; transition: left 0.3s ease-out; }
+    .sidebar.active { left: 0; }
+    .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; display: none; }
+    .sidebar-overlay.active { display: block; }
   </style>
-</head>
-<body class="h-full">
+ </head>
+ <body class="h-full bg-gradient-to-br from-emerald-50 via-white to-emerald-100 overflow-auto">
+  <div id="app-container" class="w-full min-h-full">
+   
+   <div id="notification-container" class="fixed top-0 inset-x-0 z-[200] max-w-md mx-auto"></div>
 
-  <div id="app-container" class="min-h-screen">
+   <div id="login-page" class="min-h-full flex flex-col items-center justify-center p-4">
+       <h1 class="text-3xl font-bold text-emerald-800">Badur Khan</h1>
+       <button id="login-demo" class="mt-4 px-8 py-2 bg-emerald-600 text-white rounded-xl">Masuk (Demo)</button>
+   </div>
 
-    <div id="login-page" class="min-h-screen flex items-center justify-center p-6 bg-[#0f172a]">
-      <div class="w-full max-w-md text-center animate-fadeInUp">
-        <div class="mb-12 animate-float-slow flex justify-center">
-            <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-52 h-52 object-contain" alt="Logo">
+   <div id="dashboard-page" class="hidden min-h-full">
+    
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <div id="sidebar" class="sidebar shadow-2xl">
+      <div class="p-6">
+        <div class="flex flex-col items-center mb-8 border-b pb-6">
+          <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" alt="Logo Badur Khan" class="w-24 h-24 object-contain animate-float">
+          <h2 class="mt-2 font-bold text-emerald-800 tracking-wider text-lg">BADUR KHAN</h2>
         </div>
-        <div class="bg-white p-10 rounded-3xl shadow-2xl relative overflow-hidden">
-          <div class="absolute top-0 left-0 w-full h-1.5 bg-teal-500"></div>
-          <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase italic mb-2">Badur Khan</h1>
-          <p class="text-slate-400 font-medium mb-8 text-[10px] uppercase tracking-widest leading-none">Wali Santri Monitoring System</p>
-          <form id="login-form" class="space-y-4">
-            <input type="text" id="niath-input" placeholder="MASUKKAN NIATH" class="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:border-teal-500 outline-none uppercase font-bold text-center transition-all">
-            <button type="submit" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-black rounded-xl shadow-lg uppercase transition-all tracking-wider text-sm">Masuk Portal</button>
-          </form>
-          <p id="error-msg" class="text-red-500 text-xs font-bold mt-5 hidden bg-red-50 p-3 rounded-xl">NIATH tidak terdaftar!</p>
+
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-gray-500 text-sm uppercase">Menu Utama</h3>
+          <button id="close-sidebar-btn" class="text-gray-400 hover:text-red-500 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
         </div>
+        <nav class="space-y-2">
+            <button class="menu-item w-full flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition-all bg-emerald-50" data-page="dashboard">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                <span class="font-medium text-gray-700">Dashboard</span>
+            </button>
+            </nav>
       </div>
     </div>
 
-    <div id="dashboard-page" class="hidden flex h-screen overflow-hidden">
+    <div class="p-4 md:p-8">
       
-      <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[45] hidden" onclick="toggleSidebar()"></div>
-      
-      <aside id="sidebar" class="bg-[#0f172a] flex flex-col shadow-2xl overflow-hidden shrink-0">
-        <div class="p-8 flex flex-col items-center gap-4 border-b border-slate-800/50">
-          <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 h-24 object-contain">
-          <div class="text-center">
-            <h2 class="text-white font-bold text-base uppercase leading-none italic">Badur Khan</h2>
-            <p class="text-teal-400 text-[10px] font-bold tracking-widest mt-2 uppercase">Portal Monitoring</p>
-          </div>
-        </div>
-        
-        <div class="flex-1 overflow-y-auto pt-4">
-          <nav>
-            <button onclick="navTo('dashboard')" class="nav-btn active"><span>🏠</span> Dashboard Utama</button>
-            <button onclick="navTo('biodata')" class="nav-btn"><span>👤</span> Data Santri</button> <button onclick="navTo('struktur')" class="nav-btn"><span>👨‍👩‍👧‍👦</span> Struktur Pengurus</button>
-            <button onclick="navTo('program')" class="nav-btn"><span>🎯</span> Target & Program</button>
-            <button onclick="navTo('dokumentasi')" class="nav-btn"><span>📸</span> Dokumentasi</button>
-            <button onclick="navTo('iuran')" class="nav-btn"><span>💰</span> Administrasi Iuran</button>
-            <button onclick="navTo('sertifikat')" class="nav-btn"><span>📜</span> Sertifikat Digital</button>
-          </nav>
-        </div>
-        <button onclick="location.reload()" class="p-6 bg-red-600/10 text-red-500 font-bold text-xs uppercase hover:bg-red-600 hover:text-white transition-all text-center">Logout</button>
-      </aside>
-
-      <div id="main-wrapper">
-        
-        <header class="h-16 bg-white border-b flex items-center justify-between px-6 shrink-0 shadow-sm z-40">
-          <div class="flex items-center gap-4">
-            <button onclick="toggleSidebar()" class="text-slate-500 text-2xl font-bold hover:text-teal-600 transition-colors p-2 focus:outline-none">☰</button>
-            <span class="hidden sm:block text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Badur Khan</span>
-          </div>
-          <div class="flex flex-col text-center">
-            <p id="header-clock" class="text-xl font-black text-slate-800 tabular-nums leading-none">00:00:00</p>
-            <p id="header-date" class="text-[9px] font-bold text-slate-400 uppercase mt-1"></p>
-          </div>
-          <div class="hidden md:flex flex-col text-right italic uppercase font-black">
-            <p id="academic-year" class="text-xs font-bold text-slate-800 leading-none"></p>
-            <p id="academic-semester" class="text-[9px] font-bold text-teal-600 uppercase mt-1"></p>
-          </div>
-        </header>
-
-        <main class="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 bg-[#f8fafc]">
-          
-          <div id="content-dashboard" class="content-section space-y-8 animate-fadeInUp">
+      <header class="max-w-6xl mx-auto mb-8 sticky top-8 z-40">
+        <div class="glassmorphism rounded-2xl p-4 shadow-lg">
+          <div class="flex items-center justify-between gap-4">
             
-            <div id="announcement-bar" class="hidden p-6 rounded-2xl shadow-sm border-l-[8px] flex items-center gap-5">
-              <div id="ann-icon" class="text-2xl">🔔</div>
-              <div><p id="ann-label" class="text-[10px] font-black uppercase opacity-60 mb-0.5 tracking-widest"></p><p id="display-announcement" class="text-sm font-bold"></p></div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div class="lg:col-span-2 bg-white p-8 rounded-3xl card-shadow border border-slate-200 flex items-center justify-between relative overflow-hidden">
-                <div class="relative z-10 text-left">
-                  <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 italic">Ahlan wa Sahlan,</h3>
-                  <p class="text-5xl font-black text-slate-800 tracking-tighter uppercase leading-tight" id="display-nama">-</p>
-                  <p class="inline-block px-3 py-1 bg-teal-50 text-teal-600 font-black rounded-lg mt-4 text-[10px] uppercase" id="display-niath">NIATH: -</p>
-                </div>
-                <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-48 h-48 opacity-5 absolute -right-4 -bottom-4 grayscale">
-              </div>
-
-              <div class="grid grid-cols-1 gap-4 text-left">
-                <div class="bg-teal-600 p-5 rounded-2xl text-white shadow-lg flex justify-between items-center transition-transform hover:scale-105">
-                   <p class="text-xs font-black uppercase tracking-wider">Hadir</p><p id="stat-hadir" class="text-3xl font-black">0</p>
-                </div>
-                <div class="bg-amber-500 p-5 rounded-2xl text-white shadow-lg flex justify-between items-center transition-transform hover:scale-105">
-                   <p class="text-xs font-black uppercase tracking-wider">Sakit</p><p id="stat-sakit" class="text-3xl font-black">0</p>
-                </div>
-                <div class="bg-rose-600 p-5 rounded-2xl text-white shadow-lg flex justify-between items-center transition-transform hover:scale-105">
-                   <p class="text-xs font-black uppercase tracking-wider">Alpa</p><p id="stat-alpa" class="text-3xl font-black">0</p>
+            <div class="flex items-center gap-4">
+              <button id="menu-toggle-btn" class="p-3 bg-emerald-600 text-white rounded-xl shadow-lg hover:bg-emerald-700 transition-all">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              </button>
+              <div>
+                <h1 class="text-lg md:text-xl font-bold text-emerald-800 leading-tight">Monitoring Santri</h1>
+                <div id="auto-academic-period" class="text-[10px] md:text-xs font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-2">
+                    <span class="animate-pulse">●</span> Memuat Periode...
                 </div>
               </div>
             </div>
 
-            <div class="bg-white p-10 rounded-3xl card-shadow italic text-justify italic">
-              <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-3 italic"><span class="w-10 h-10 flex items-center justify-center bg-teal-100 text-teal-700 rounded-xl text-lg uppercase font-black">📜</span> Sejarah Thifan Po Khan</h3>
-              <p class="text-slate-600 text-sm leading-relaxed">Sejarah <strong>Thifan Po Khan</strong> berakar pada ekspansi Islam ke Asia Tengah pasca-Pertempuran Qadisiyyah (636 M), yang memicu transformasi bela diri lokal di Turkistan Timur (Xinjiang) dari Kungfu Utara Budha menjadi Muslim melalui proses islamisasi oleh suku-suku Turki. [cite_start]Evolusi keilmuan ini mencapai puncaknya pada abad ke-13 melalui Master Je’nan yang mensintesis berbagai teknik gulat Mongol, Tartar, hingga perkelahian Shaolin menjadi aliran Shurulkhan, sebelum akhirnya disatukan kembali oleh Ahmad Syiharani menjadi Thifan Po Khan yang terdokumentasi dalam Kitab Zhodam[cite: 29, 105].</p>
-              [cite_start]<p class="mt-4 text-slate-600 text-sm">Di era modern, Thifan Po Khan dikonsolidasikan oleh <strong>Ustadz Ahmad Eldin Marzdedeq</strong> dan kini diteruskan oleh para penerusnya seperti <strong>Ustadz Pupu</strong> sebagai warisan bela diri yang mengintegrasikan kekuatan fisik dengan nilai-nilai Tauhid dan Sunnah[cite: 30, 108].</p>
-            </div>
-          </div>
-
-          <div id="content-struktur" class="content-section hidden animate-fadeInUp uppercase font-black text-center">
-            <div class="bg-white p-10 rounded-3xl card-shadow overflow-x-auto">
-              <h3 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest italic">Struktur Pengurus</h3>
-              <div class="flex flex-col items-center gap-8 min-w-[600px] py-4">
-                <div class="org-box bg-slate-800 !text-white min-w-[240px] italic uppercase font-black"><p class="text-[8px] opacity-50 mb-1 italic uppercase font-black">Pembina Utama</p><p class="text-sm">Ust. Ali Yahya, B.A.</p></div>
-                <div class="flex gap-8 italic uppercase font-black"><div class="org-box bg-teal-600 !text-white"> Ketua: M. Nikhat Al-Badruni </div><div class="org-box bg-teal-600 !text-white"> Wakil: Ahmad Jariir </div></div>
-                <div class="flex gap-4 italic uppercase font-black text-xs"><div class="org-box bg-slate-50 italic font-bold">Sekretaris: Maulana & Fahri</div><div class="org-box bg-slate-50 italic font-bold">Bendahara: Akio & Agha</div></div>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 w-full text-[10px] font-bold italic uppercase font-black">
-                  <div class="org-box italic">Humas: Fauzan & Nabil</div><div class="org-box italic">Korlap: Narotama & Shafwan</div><div class="org-box italic">Kesehatan: Hibrizi Asyura</div><div class="org-box italic">Konsumsi: M Azfar Azka</div><div class="org-box italic">Inventaris: Tansri Ubaidillah</div>
-                </div>
+            <div class="flex items-center gap-4">
+              <div class="text-right hidden sm:block border-r pr-4 border-emerald-100">
+                <p id="header-time" class="text-xl font-bold text-emerald-800 leading-none">00:00:00</p>
+                <p id="header-date" class="text-[10px] text-gray-500 font-medium uppercase mt-1 tracking-tighter">Memuat Hari...</p>
               </div>
+              <button id="logout-btn" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-xl font-bold text-sm hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                <span>Keluar</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+              </button>
             </div>
-          </div>
 
-          <div id="content-biodata" class="content-section hidden animate-fadeInUp uppercase font-black">
-            <div class="bg-white p-10 rounded-3xl card-shadow max-w-2xl mx-auto text-center">
-              <h3 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest font-black">Informasi Data Santri</h3>
-              <div class="space-y-4">
-                <div class="flex justify-between p-5 bg-slate-50 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Nama</span><span id="bio-nama" class="font-black text-slate-800 text-right">-</span></div>
-                <div class="flex justify-between p-5 bg-white border border-slate-100 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Usia</span><span id="bio-umur" class="font-black text-slate-700 text-right">-</span></div>
-                <div class="flex justify-between p-5 bg-slate-50 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Kelas</span><span id="bio-kelas" class="font-black text-slate-700 text-right">-</span></div>
-                <div class="flex justify-between p-5 bg-white border border-slate-100 rounded-xl uppercase"><span class="font-bold text-slate-400 text-xs">Sabuk</span><span id="bio-tingkat" class="font-black text-teal-600 text-right">-</span></div>
-                <div class="p-8 bg-slate-900 rounded-2xl mt-8 text-white text-center shadow-lg"><p id="bio-alamat" class="text-sm font-medium leading-relaxed italic uppercase">-</p></div>
-              </div>
-            </div>
           </div>
+        </div>
+      </header>
 
-          <div id="content-iuran" class="content-section hidden animate-fadeInUp text-center uppercase italic font-black">
-            <div class="bg-white p-16 rounded-3xl card-shadow border border-slate-200">
-              <h3 class="text-2xl font-black text-slate-800 mb-12 italic uppercase font-black tracking-widest">Administrasi Keuangan</h3>
-              <div class="max-w-md mx-auto p-12 bg-teal-50 rounded-3xl border border-teal-100 shadow-inner">
-                <p class="text-xs text-teal-600 font-bold uppercase mb-4 tracking-widest">Iuran Bulanan</p>
-                <p id="display-iuran" class="text-6xl font-black text-teal-800 tracking-tighter uppercase">-</p>
+      <main id="content-container" class="max-w-6xl mx-auto">
+          <div id="dashboard-content" class="animate-fade-in">
+              <div class="bg-white p-6 rounded-2xl shadow-sm border border-emerald-50">
+                  <h2 class="text-xl font-bold text-emerald-800 mb-2">Ahlan wa Sahlan!</h2>
+                  <p class="text-gray-600">Gunakan portal ini untuk memantau kehadiran dan perkembangan latihan beladiri santri secara real-time.</p>
               </div>
-            </div>
           </div>
-
-          <div id="content-dokumentasi" class="content-section hidden animate-fadeInUp text-center uppercase italic font-black">
-            <div class="bg-white p-12 rounded-3xl card-shadow border border-slate-200">
-              <h3 class="text-xl font-black text-slate-800 mb-12 uppercase">Galeri Dokumentasi</h3>
-              <div id="dynamic-docs">
-                <div class="text-center py-20 bg-slate-50 rounded-3xl border-4 border-dashed border-slate-200">
-                  <p class="text-slate-400 text-xs italic font-bold">Media santri akan tampil setelah diunggah oleh Pelatih.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div id="content-sertifikat" class="content-section hidden space-y-12 animate-fadeInUp text-center uppercase font-black italic">
-            <div id="cert-area" class="certificate-container p-16 max-w-4xl mx-auto aspect-[4/3] flex flex-col justify-between shadow-2xl rounded-lg overflow-hidden uppercase italic">
-              <div class="relative z-10">
-                <img src="https://i.ibb.co.com/TDFbxxz1/Gemini-Generated-Image-2dt1jc2dt1jc2dt1-removebg-preview.png" class="w-24 mx-auto mb-10 opacity-30 rounded-full">
-                <h2 class="font-certificate text-5xl text-amber-900 font-bold mb-10 italic uppercase">Sertifikat Kelulusan</h2>
-                <h3 id="cert-nama" class="font-certificate text-5xl font-bold text-slate-900 my-10 border-b-4 border-amber-300 inline-block px-12 italic uppercase">-</h3>
-                <p id="cert-tingkat" class="text-teal-700 font-black text-4xl my-6 tracking-[0.2em] italic">-</p>
-              </div>
-              <div class="relative z-10 flex flex-col items-center italic uppercase font-black">
-                <p class="text-slate-400 text-[10px] font-bold mb-16 uppercase">Pembina Badur Khan</p>
-                <span class="text-slate-800 font-black uppercase text-base border-t-2 border-slate-800 pt-2 px-10 italic">Ust. Ali Yahya, B.A.</span>
-              </div>
-            </div>
-            <button onclick="downloadPDF()" class="w-full max-w-md mx-auto block py-6 bg-slate-900 text-white font-black rounded-[2rem] shadow-lg transition-all uppercase tracking-[0.2em] text-xs hover:bg-black active:scale-95 italic">📥 Download PDF</button>
-          </div>
-
-          <div id="content-program" class="content-section hidden animate-fadeInUp space-y-8 uppercase italic font-black text-center">
-            <div class="bg-white p-12 rounded-3xl card-shadow border">
-              <h3 class="text-2xl font-black text-slate-800 mb-10 italic uppercase font-black tracking-widest">Program Pelatihan</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-left italic uppercase font-black">
-                <div class="bg-teal-50 p-10 rounded-3xl border border-teal-100 italic uppercase font-black">
-                  <h4 class="font-black text-teal-800 mb-4 uppercase tracking-widest italic font-black">📅 Program Tahunan</h4>
-                  <ul class="space-y-3 font-medium text-teal-900/70 uppercase italic uppercase font-black"><li>• Ujian Kenaikan Tingkat (UKT)</li><li>• Pertandingan</li></ul> </div>
-                <div class="bg-amber-50 p-10 rounded-3xl border border-amber-100 italic uppercase font-black">
-                  <h4 class="font-black text-amber-800 mb-4 uppercase tracking-widest italic font-black">🌓 Program Semesteran</h4>
-                  <ul class="space-y-3 font-medium text-amber-900/70 uppercase italic uppercase font-black"><li>• Uji Kompetensi Teknik</li><li>• Fun Match & Silaturahmi</li></ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </main>
-      </div>
+      </main>
     </div>
+   </div>
   </div>
 
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9Xilh7v08WY11I9dH626HcXsxBPr3-ln_L4fdbNP-34p8ySuA8jO7B3xlW1ULpgmgrQ/exec';
-
-    function updateClock() {
+    // 1. LOGIKA WAKTU & PERIODE AKADEMIK OTOMATIS
+    function updateClockAndPeriod() {
       const now = new Date();
-      if(document.getElementById('current-time-login')) document.getElementById('current-time-login').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
-      if(document.getElementById('current-day-login')) document.getElementById('current-day-login').innerText = now.toLocaleDateString('id-ID', { weekday: 'long' });
-      if(document.getElementById('header-clock')) document.getElementById('header-clock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
-      if(document.getElementById('header-date')) document.getElementById('header-date').innerText = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
       
-      const month = now.getMonth() + 1;
+      // Update Jam & Hari
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      
+      const headerTime = document.getElementById('header-time');
+      const headerDate = document.getElementById('header-date');
+      
+      if(headerTime) headerTime.textContent = `${hours}:${minutes}:${seconds}`;
+      if(headerDate) headerDate.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+
+      // Update Tahun Ajaran & Semester
+      // Juli (6) sampai Desember (11) = Ganjil. 
+      // Januari (0) sampai Juni (5) = Genap.
+      const month = now.getMonth();
       const year = now.getFullYear();
-      if(document.getElementById('academic-year')) document.getElementById('academic-year').innerText = (month >= 7) ? `${year}/${year + 1}` : `${year - 1}/${year}`;
-      if(document.getElementById('academic-semester')) document.getElementById('academic-semester').innerText = (month >= 7 && month <= 12) ? "Ganjil" : "Genap";
-    }
-    setInterval(updateClock, 1000); updateClock();
+      let semester = "";
+      let academicYear = "";
 
-    function toggleSidebar() {
-      if(window.innerWidth > 1024) { document.body.classList.toggle('sidebar-hidden'); } 
-      else { document.body.classList.toggle('sidebar-active'); document.getElementById('sidebar-overlay').classList.toggle('hidden'); }
-    }
+      if (month >= 6) { 
+        semester = "Ganjil";
+        academicYear = `${year}/${year + 1}`;
+      } else { 
+        semester = "Genap";
+        academicYear = `${year - 1}/${year}`;
+      }
 
-    function navTo(section) {
-      document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-      const target = document.getElementById(`content-${section}`);
-      if(target) target.classList.remove('hidden');
-      
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if(btn.innerText.toLowerCase().includes(section)) btn.classList.add('active');
-      });
-      if(window.innerWidth < 1024) { if(document.body.classList.contains('sidebar-active')) toggleSidebar(); }
-    }
-
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const niath = document.getElementById('niath-input').value.trim();
-      if(!niath) return;
-      const btn = e.target.querySelector('button');
-      btn.innerText = "AUTHENTICATING..."; btn.disabled = true;
-      const callbackName = 'jsonp_cb_' + Math.floor(Math.random() * 1000000);
-      window[callbackName] = function(data) {
-        delete window[callbackName];
-        document.querySelectorAll('script[data-type=\"jsonp\"]').forEach(s => s.remove());
-        if(data.error) { document.getElementById('error-msg').classList.remove('hidden'); btn.innerText = "MASUK PORTAL"; btn.disabled = false; } 
-        else { populateDashboard(data); document.getElementById('login-page').classList.add('hidden'); document.getElementById('dashboard-page').classList.remove('hidden'); }
-      };
-      const scriptTag = document.createElement('script');
-      scriptTag.src = `${SCRIPT_URL}?niath=${niath}&callback=${callbackName}`;
-      scriptTag.setAttribute('data-type', 'jsonp');
-      document.head.appendChild(scriptTag);
-    });
-
-    function populateDashboard(d) {
-      document.getElementById('display-nama').innerText = d.nama;
-      document.getElementById('display-niath').innerText = `NIATH: ${d.niath}`;
-      document.getElementById('stat-hadir').innerText = d.kehadiran || 0;
-      document.getElementById('stat-sakit').innerText = d.sakit || 0;
-      document.getElementById('stat-alpa').innerText = d.alpa || 0;
-      document.getElementById('display-iuran').innerText = d.iuran ? d.iuran.toString().replace(/\"/g, "") : "LUNAS";
-      
-      const bioData = {'bio-nama': d.nama, 'bio-umur': `${d.umur || '-'} Thn`, 'bio-kelas': d.kelas, 'bio-tingkat': d.tingkat, 'bio-alamat': d.alamat, 'cert-nama': d.nama, 'cert-tingkat': d.tingkat};
-      for (const [id, val] of Object.entries(bioData)) { if(document.getElementById(id)) document.getElementById(id).innerText = val || "-"; }
-
-      const annBar = document.getElementById('announcement-bar');
-      if (d.announcement && d.announcement.trim() !== "") {
-          let showMessage = true;
-          if (d.announcement_exp) {
-              const expDate = new Date(d.announcement_exp);
-              const today = new Date(); today.setHours(0,0,0,0);
-              if (today > expDate) showMessage = false;
-          }
-          if (showMessage) {
-              const isUrgent = d.announcement.trim().toUpperCase().startsWith("PENTING");
-              annBar.className = isUrgent ? "animate-fadeInUp bg-rose-50 border-rose-600 p-6 rounded-2xl shadow-sm flex items-center gap-5 border-l-[8px]" : "animate-fadeInUp bg-teal-50 border-teal-600 p-6 rounded-2xl shadow-sm flex items-center gap-5 border-l-[8px]";
-              document.getElementById('display-announcement').innerText = d.announcement;
-              document.getElementById('ann-label').innerText = isUrgent ? "🚨 Darurat" : "Informasi";
-              annBar.classList.remove('hidden');
-          } else { annBar.classList.add('hidden'); }
-      } else { annBar.classList.add('hidden'); }
-
-      const dynDocs = document.getElementById('dynamic-docs');
-      if (dynDocs && (d.foto_lat || d.video_lat)) {
-        dynDocs.innerHTML = `<div class=\"grid grid-cols-1 md:grid-cols-2 gap-10 animate-fadeInUp\">
-          ${d.foto_lat ? `<div class=\"text-center\"><p class=\"text-[10px] font-black text-teal-600 uppercase mb-3 tracking-widest\">Update Foto</p><div class=\"rounded-3xl overflow-hidden shadow-2xl border-8 border-white aspect-video\"><img src=\"${d.foto_lat}\" class=\"w-full h-full object-cover\"></div></div>` : ''}
-          ${d.video_lat ? `<div class=\"text-center\"><p class=\"text-[10px] font-black text-amber-600 uppercase mb-3 tracking-widest\">Update Video</p><div class=\"rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-black aspect-video\"><video controls class=\"w-full h-full\"><source src=\"${d.video_lat}\" type=\"video/mp4\"></video></div></div>` : ''}
-        </div>`;
+      const periodEl = document.getElementById('auto-academic-period');
+      if (periodEl) {
+        periodEl.innerHTML = `TA ${academicYear} <span class="mx-1 text-emerald-300">|</span> Semester ${semester}`;
       }
     }
 
-    async function downloadPDF() {
-      const area = document.getElementById('cert-area');
-      const canvas = await html2canvas(area, { scale: 3, useCORS: true });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jspdf.jsPDF('l', 'mm', 'a4');
-      pdf.addImage(imgData, 'PNG', 10, 10, 277, 190);
-      pdf.save(`Sertifikat-BadurKhan-${document.getElementById('cert-nama').innerText}.pdf`);
-    }
+    // Jalankan clock setiap detik
+    setInterval(updateClockAndPeriod, 1000);
+    updateClockAndPeriod();
+
+    // 2. NAVIGASI & UI
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    
+    document.getElementById('menu-toggle-btn').addEventListener('click', () => {
+      sidebar.classList.add('active');
+      overlay.classList.add('active');
+    });
+
+    document.getElementById('close-sidebar-btn').addEventListener('click', () => {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    // Logout Action
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      if(confirm('Apakah Anda ingin keluar?')) {
+        document.getElementById('dashboard-page').classList.add('hidden');
+        document.getElementById('login-page').classList.remove('hidden');
+      }
+    });
+
+    // Demo Login
+    document.getElementById('login-demo').addEventListener('click', () => {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('dashboard-page').classList.remove('hidden');
+    });
   </script>
-</body>
+ </body>
 </html>
