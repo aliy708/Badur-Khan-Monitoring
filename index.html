@@ -14,136 +14,153 @@
         .font-arabic { font-family: 'Amiri', serif; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .glassmorphism { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: white; z-index: 100; transition: 0.3s; }
+        .glassmorphism { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .sidebar { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: white; z-index: 100; transition: 0.3s ease-out; }
         .sidebar.active { left: 0; }
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; display: none; }
         .sidebar-overlay.active { display: block; }
     </style>
 </head>
-<body class="h-full bg-slate-50 overflow-auto">
+<body class="h-full bg-emerald-50/30 overflow-auto">
+    <div id="app-container" class="w-full min-h-full">
+        <div id="notification-container" class="fixed top-0 inset-x-0 z-[200] max-w-md mx-auto"></div>
 
-    <div id="notification-container" class="fixed top-4 inset-x-0 z-[200] max-w-sm mx-auto pointer-events-none"></div>
+        <div id="login-page" class="min-h-full flex flex-col items-center justify-center p-4">
+            <div class="w-full max-w-md text-center animate-fade-in">
+                <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" alt="Logo" class="w-32 h-32 mx-auto mb-6 object-contain">
+                <h1 class="text-3xl font-bold text-emerald-800 mb-2">Badur Khan</h1>
+                <p class="text-emerald-600 font-medium mb-8">Portal Monitoring Santri</p>
+                
+                <div class="bg-white p-8 rounded-3xl shadow-xl border border-emerald-100">
+                    <form id="login-form" class="space-y-6">
+                        <div class="text-left">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">NIATH (Nomor Induk)</label>
+                            <input type="text" id="niath-input" placeholder="Masukkan NIATH Anda" class="w-full px-4 py-4 rounded-xl border-2 border-gray-100 focus:border-emerald-500 outline-none transition-all" required>
+                        </div>
+                        <button type="submit" id="login-btn" class="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-lg flex items-center justify-center gap-2 transition-all">
+                            <span>Masuk</span>
+                        </button>
+                    </form>
+                    <div id="loading-state" class="hidden mt-4 text-emerald-600 font-semibold animate-pulse">Memuat data dari server...</div>
+                </div>
+            </div>
+        </div>
 
-    <div id="login-page" class="min-h-full flex flex-col items-center justify-center p-6 bg-emerald-900 text-white">
-        <div class="w-full max-w-md text-center">
-            <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" class="w-32 h-32 mx-auto mb-6" alt="Logo">
-            <h1 class="text-4xl font-bold mb-2">Badur Khan</h1>
-            <p class="text-emerald-200 mb-8 uppercase tracking-widest text-sm font-semibold">Monitoring Beladiri Santri</p>
-            
-            <div class="bg-white p-8 rounded-3xl shadow-2xl text-slate-800">
-                <form id="login-form" class="space-y-4">
-                    <div class="text-left">
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Nomor Induk (NIATH)</label>
-                        <input type="text" id="niath-input" placeholder="Contoh: BK2024001" class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-emerald-500 outline-none transition-all">
+        <div id="dashboard-page" class="hidden min-h-full">
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+            <div id="sidebar" class="sidebar shadow-2xl overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex flex-col items-center mb-8 pb-6 border-b border-gray-100">
+                        <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" alt="Logo" class="w-24 h-24 object-contain mb-2">
+                        <h2 class="font-bold text-emerald-800">BADUR KHAN</h2>
                     </div>
-                    <button type="submit" id="login-btn" class="w-full py-4 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-2">
-                        <span>Lihat Data Santri</span>
-                    </button>
-                </form>
-                <div id="loading-spinner" class="hidden mt-4 text-emerald-600 font-semibold animate-pulse">Menghubungkan ke Server...</div>
+                    <nav class="space-y-2">
+                        <button class="menu-item w-full flex items-center gap-3 p-3 rounded-xl bg-emerald-50 text-emerald-700 font-bold" data-page="dashboard">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                            Dashboard
+                        </button>
+                        </nav>
+                </div>
+            </div>
+
+            <div class="p-4 md:p-8">
+                <header class="max-w-6xl mx-auto mb-8 sticky top-4 z-40">
+                    <div class="glassmorphism rounded-2xl p-4 shadow-lg border border-white">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <button id="menu-toggle-btn" class="p-2 bg-emerald-600 text-white rounded-lg">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                                </button>
+                                <div>
+                                    <h1 class="font-bold text-emerald-900 leading-none mb-1" id="dash-santri-name">Nama Santri</h1>
+                                    <div id="auto-academic-period" class="text-[10px] md:text-xs font-bold text-emerald-600 uppercase tracking-wider">
+                                        Memuat Periode...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="text-right hidden sm:block border-r pr-4 border-emerald-100">
+                                    <p id="header-time" class="text-lg font-bold text-emerald-800 leading-none">00:00</p>
+                                    <p id="header-date" class="text-[10px] text-gray-500 uppercase font-semibold">Tanggal</p>
+                                </div>
+                                <button id="logout-btn" class="px-4 py-2 bg-red-50 text-red-600 rounded-xl font-bold text-xs uppercase hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                                    Keluar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main class="max-w-6xl mx-auto space-y-6">
+                    <div class="grid grid-cols-3 gap-4 animate-fade-in">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-emerald-500 text-center">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Hadir</p>
+                            <p id="stat-hadir" class="text-2xl font-bold text-emerald-600">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-amber-500 text-center">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Sakit</p>
+                            <p id="stat-sakit" class="text-2xl font-bold text-amber-600">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border-b-4 border-red-500 text-center">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Alpa</p>
+                            <p id="stat-alpa" class="text-2xl font-bold text-red-600">0</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-lg border border-emerald-50">
+                        <h3 class="font-bold text-emerald-900 mb-4">Grafik Progres Skor Teknik</h3>
+                        <div class="h-[250px]"><canvas id="progressChart"></canvas></div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-3xl shadow-lg border border-emerald-50 overflow-hidden">
+                        <h3 class="font-bold text-emerald-900 mb-4">Status Iuran Bulanan</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3">Periode</th>
+                                        <th class="px-4 py-3">Status</th>
+                                        <th class="px-4 py-3">Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="iuran-table-body" class="divide-y divide-gray-50">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
     </div>
 
-    <div id="dashboard-page" class="hidden min-h-full pb-10">
-        <div id="sidebar-overlay" class="sidebar-overlay"></div>
-        <div id="sidebar" class="sidebar p-6 shadow-2xl">
-            <img src="https://i.ibb.co/ZRGH2R6Y/9am9pm-3.png" class="w-20 mx-auto mb-8">
-            <nav class="space-y-2">
-                <button class="w-full text-left p-4 rounded-xl bg-emerald-50 text-emerald-700 font-bold">Dashboard</button>
-            </nav>
-        </div>
-
-        <div class="p-4 md:p-8">
-            <header class="max-w-6xl mx-auto mb-8 sticky top-4 z-40">
-                <div class="glassmorphism rounded-2xl p-4 shadow-xl">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <button id="menu-toggle-btn" class="p-3 bg-emerald-600 text-white rounded-xl shadow-lg">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                            </button>
-                            <div>
-                                <h1 class="font-bold text-slate-800" id="dash-santri-name">Nama Santri</h1>
-                                <div id="auto-academic-period" class="text-[10px] font-bold text-emerald-600 uppercase">TA 2025/2026 | Semester Genap</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div class="text-right hidden md:block">
-                                <p id="header-time" class="text-xl font-bold text-emerald-800 leading-none">00:00</p>
-                                <p id="header-date" class="text-[10px] text-slate-400 uppercase mt-1 tracking-wider">Tanggal</p>
-                            </div>
-                            <button id="logout-btn" class="p-3 bg-red-50 text-red-600 rounded-xl border border-red-100 font-bold text-xs uppercase">Keluar</button>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <main class="max-w-6xl mx-auto space-y-6">
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center border-b-4 border-emerald-500">
-                        <p class="text-[10px] uppercase font-bold text-slate-400">Hadir</p>
-                        <p id="stat-hadir" class="text-2xl font-bold text-emerald-600">0</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center border-b-4 border-amber-500">
-                        <p class="text-[10px] uppercase font-bold text-slate-400">Sakit</p>
-                        <p id="stat-sakit" class="text-2xl font-bold text-amber-600">0</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl shadow-sm text-center border-b-4 border-red-500">
-                        <p class="text-[10px] uppercase font-bold text-slate-400">Alpa</p>
-                        <p id="stat-alpa" class="text-2xl font-bold text-red-600">0</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100">
-                    <h3 class="font-bold text-slate-800 mb-4">Grafik Perkembangan Skor Teknik</h3>
-                    <div class="h-[250px]"><canvas id="progressChart"></canvas></div>
-                </div>
-
-                <div class="bg-white p-6 rounded-3xl shadow-lg border border-slate-100 overflow-hidden">
-                    <h3 class="font-bold text-slate-800 mb-4">Rincian Iuran Bulanan</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
-                                <tr>
-                                    <th class="px-4 py-3">Periode</th>
-                                    <th class="px-4 py-3">Status</th>
-                                    <th class="px-4 py-3">Keterangan</th>
-                                </tr>
-                            </thead>
-                            <tbody id="iuran-table-body" class="divide-y divide-slate-100">
-                                </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
     <script>
-        // --- KONFIGURASI ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJkS8Yew1q8YcRY0dnfSAJY1CKseXNYYEfxwK4Q2kjwEU6YgzYKeURF2aQIHPOSaiINQ/exec';
+        // --- 1. KONFIGURASI ---
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-4air1KnXzQeLXExD9xDleNY9nTDt9PNrTqxnWa-m9QeMQ_oVAXmKj1bFUT8NZRIJkw/exec';
         let myChart = null;
 
-        // 1. Waktu & Periode Otomatis
+        // --- 2. LOGIKA WAKTU & PERIODE OTOMATIS ---
         function updateClockAndPeriod() {
             const now = new Date();
-            const headerTime = document.getElementById('header-time');
-            const headerDate = document.getElementById('header-date');
-            const periodEl = document.getElementById('auto-academic-period');
+            
+            // Jam & Tanggal
+            document.getElementById('header-time').textContent = now.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('header-date').textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
 
-            if(headerTime) headerTime.textContent = now.toLocaleTimeString('id-ID', { hour12: false });
-            if(headerDate) headerDate.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' });
-
+            // Tahun Ajaran & Semester
             const month = now.getMonth();
             const year = now.getFullYear();
             const semester = month >= 6 ? "Ganjil" : "Genap";
             const academicYear = month >= 6 ? `${year}/${year + 1}` : `${year - 1}/${year}`;
-            if(periodEl) periodEl.innerHTML = `TA ${academicYear} <span class="mx-1 opacity-30">|</span> Semester ${semester}`;
+            
+            document.getElementById('auto-academic-period').innerHTML = 
+                `TA ${academicYear} <span class="mx-1 text-emerald-200">|</span> Semester ${semester}`;
         }
         setInterval(updateClockAndPeriod, 1000);
+        updateClockAndPeriod();
 
-        // 2. Fetch Data (JSONP)
+        // --- 3. FETCH DATA DARI GOOGLE SHEETS (JSONP) ---
         async function fetchSantriData(niath) {
             return new Promise((resolve, reject) => {
                 const callbackName = 'jsonp_' + Date.now();
@@ -160,32 +177,36 @@
             });
         }
 
-        // 3. Display Data & Chart
+        // --- 4. DISPLAY DATA KE UI ---
         function displaySantriData(santri) {
             document.getElementById('dash-santri-name').textContent = santri.nama;
             document.getElementById('stat-hadir').textContent = santri.kehadiran;
             document.getElementById('stat-sakit').textContent = santri.sakit;
             document.getElementById('stat-alpa').textContent = santri.alpa;
 
-            // Update Iuran Table
+            // Update Tabel Iuran
             const tableBody = document.getElementById('iuran-table-body');
             tableBody.innerHTML = '';
-            santri.rincian_iuran.forEach(item => {
-                const color = item.status === 'Lunas' ? 'text-emerald-600 bg-emerald-50' : 'text-red-600 bg-red-50';
-                tableBody.innerHTML += `
-                    <tr>
-                        <td class="px-4 py-4 font-medium text-slate-700">${item.periode}</td>
-                        <td class="px-4 py-4"><span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${color}">${item.status}</span></td>
-                        <td class="px-4 py-4 text-slate-400">${item.ket}</td>
-                    </tr>
-                `;
-            });
+            if (santri.rincian_iuran) {
+                santri.rincian_iuran.forEach(item => {
+                    const statusStyle = item.status === 'Lunas' 
+                        ? 'bg-emerald-100 text-emerald-700' 
+                        : 'bg-red-100 text-red-700';
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td class="px-4 py-4 font-semibold text-gray-700">${item.periode}</td>
+                            <td class="px-4 py-4"><span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase ${statusStyle}">${item.status}</span></td>
+                            <td class="px-4 py-4 text-gray-400 text-xs">${item.ket}</td>
+                        </tr>
+                    `;
+                });
+            }
 
             // Update Grafik
-            updateChart(santri.grafik_skor || [0,0,0,0,0,0]);
+            initOrUpdateChart(santri.grafik_skor || [0,0,0,0,0,0]);
         }
 
-        function updateChart(dataSkor) {
+        function initOrUpdateChart(dataSkor) {
             const ctx = document.getElementById('progressChart').getContext('2d');
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
@@ -195,11 +216,12 @@
                     datasets: [{
                         label: 'Skor Teknik (%)',
                         data: dataSkor,
-                        borderColor: '#10b981',
+                        borderColor: '#059669',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
                         fill: true,
                         tension: 0.4,
-                        borderWidth: 4
+                        borderWidth: 4,
+                        pointRadius: 5
                     }]
                 },
                 options: { 
@@ -211,36 +233,31 @@
             });
         }
 
-        // 4. Event Handler Login
+        // --- 5. EVENT HANDLERS ---
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const niath = document.getElementById('niath-input').value.trim();
-            if (!niath) return alert('Masukkan NIATH!');
-
-            const btn = document.getElementById('login-btn');
-            const spinner = document.getElementById('loading-spinner');
+            const loading = document.getElementById('loading-state');
             
-            btn.disabled = true;
-            spinner.classList.remove('hidden');
-
+            loading.classList.remove('hidden');
+            
             try {
-                const santri = await fetchSantriData(niath);
-                if (santri.error) {
-                    alert(santri.error);
+                const data = await fetchSantriData(niath);
+                if (data.error) {
+                    alert(data.error);
                 } else {
-                    displaySantriData(santri);
+                    displaySantriData(data);
                     document.getElementById('login-page').classList.add('hidden');
                     document.getElementById('dashboard-page').classList.remove('hidden');
                 }
             } catch (err) {
-                alert('Terjadi kesalahan jaringan!');
+                alert('Terjadi kesalahan jaringan atau URL Script salah.');
             } finally {
-                btn.disabled = false;
-                spinner.classList.add('hidden');
+                loading.classList.add('hidden');
             }
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => location.reload());
+        // Sidebar Toggle
         document.getElementById('menu-toggle-btn').addEventListener('click', () => {
             document.getElementById('sidebar').classList.add('active');
             document.getElementById('sidebar-overlay').classList.add('active');
@@ -249,6 +266,9 @@
             document.getElementById('sidebar').classList.remove('active');
             document.getElementById('sidebar-overlay').classList.remove('active');
         });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => location.reload());
     </script>
 </body>
 </html>
